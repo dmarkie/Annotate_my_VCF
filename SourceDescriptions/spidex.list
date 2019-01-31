@@ -1,0 +1,4 @@
+##columns	#chr	pos	pos	ref	alt
+##column tag	Number	Type	Description
+5	score	A	Float	Per cent change in splicing prediction for this alt allele compared to reference. 
+6	zscore	A	Float	The number of standard deviations this alt allele's spidex score from the mean of all spidex scores calculated.

@@ -1,0 +1,12 @@
+##columns	#chrom  start   end
+##column tag	Number	Type	Description
+4	ENSGID	.	String	The Ensembl Gene ID for the RVIS score.
+5	Gene	.	String	The gene name for the RVIS score. The annotation region for the gene is from the first to the last base of all Ensembl transcripts and includes introns. Note that this may not be the current HGNC gene symbol. 
+6	GeneCov	.	Float	Something to do with coverage of the gene in the data - unclear.
+7	Score	.	Float	Residual Variation Intolerance Score, a gene based score designed to rank genes in terms of whether they have more or less common functional genetic variation relative to the genome wide expectation given the amount of apparently neutral variation the gene has. A gene with a positive score has more common functional variation, and a gene with a negative score has less and is referred to as intolerant.
+8	percentScore	.	Float	This value ranks genes based on RVIS scores from most intolerant to least. As an example, a gene with a percentile of 3.37, means it is amongst the 3.37 per cent most intolerant of human genes.
+9	EdgeCase	.	String	Unclear
+10	OE-ratio	.	Float	Unclear
+11	percentOE-ratio	.	Float	Unclear
+12	altScore	.	Float	Unclear
+13	percentaltScore	.	Float	Unclear

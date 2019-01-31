@@ -1,0 +1,4 @@
+##columns	1	2	3
+##column tag	Number	Type	Description
+4	id	1	String	Not a useful annotation
+5	score	1	Float	Conservation score from the PHAST package (http://compgen.bscb.cornell.edu/phast/) for multiple alignments of 99 vertebrate genomes to the human genome. It takes into account neighbouring conservation scores, and is appropriate for identifying conserved elements. Range 0-1.

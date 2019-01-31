@@ -1,0 +1,10 @@
+##columns	#chrom	start	end
+##column tag	Number	Type	Description
+4	GeneID	.	String	The NCBI GeneID for the gene associated with a clinical disease in this region from ClinVar
+5	GeneSymbol	.	String	The gene symbol for the gene associated with a clinical disease in this region from ClinVar
+6	ConceptID	.	String	The disease concept from USML or NCBI
+7	Disease	.	String	The disease associated with a gene in this region from ClinVar
+8	Source	.	String	The source of the disease-gene association - if more than one source only the first is shown
+9	SourceID	.	String	The ID used by the source for this disease
+10	DiseaseMIM	.	String	The MIM number for the associated disease
+11	LastUpdated	.	String	The last time this particular record was updated in ClinVar

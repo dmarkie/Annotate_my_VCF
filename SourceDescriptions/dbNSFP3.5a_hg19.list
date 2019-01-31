@@ -1,0 +1,242 @@
+##columns	#chr	pos	pos	ref	alt
+##column tag	Number	Type	Description
+5	aaref	A	Character	Reference amino acid. Will be . if the variant is a splicing site SNP (2bp on each end of an intron)
+6	aaalt	A	Character	Alternative amino acid. Will be . if the variant is a splicing site SNP (2bp on each end of an intron)
+7	rs_dbSNP150	A	String	rs number from dbSNP 150
+10	hg18_chr	A	String	Chromosome according to hg18, . means missing.
+11	hg18_pos	A	Integer	Physical position on the chromosome according to hg18 (1-based coordinate). For mitochondrial SNV, this position refers to a YRI sequence (GenBank	AF347015)
+12	genename	A	String	Gene name; if the nsSNV can be assigned to multiple genes, gene names are separated by |.
+13	cds_strand	A	String	Coding sequence (CDS) strand (+ or -).
+14	refcodon	A	String	Reference codon.
+15	codonpos	A	String	Position on the codon (1, 2 or 3).
+16	codon_degeneracy	A	String	Degenerate type (0, 2 or 3).
+17	Ancestral_allele	A	String	Ancestral allele based on 8 primates EPO. Ancestral alleles by Ensembl 84. ACTG high-confidence call with ancestral state supported by the other two sequences, actg low-confidence call, ancestral state supported by one sequence only, N failure, the ancestral state is not supported by any other sequence, - the extant species contains an insertion at this position, . no coverage in the alignment
+18	AltaiNeandertal	A	String	Genotype of a deep sequenced Altai Neanderthal.
+19	Denisova	A	String	Genotype of a deep sequenced Denisova.
+20	Ensembl_geneid	A	String	Ensembl gene id.
+21	Ensembl_transcriptid	A	String	Ensembl transcript ids (multiple entries separated by |).
+22	Ensembl_proteinid	A	String	Ensembl protein ids (multiple entries separated by |), corresponding to Ensembl_transcriptids
+23	aapos	A	String	amino acid position as to the protein, -1 if the variant is a splicing site SNP (2bp on each end of an intron), multiple scores separated by | corresponding to Ensembl_proteinid. 
+24	SIFT_score	A	String	SIFT score (SIFTori). Scores range from 0 to 1. The smaller the score the more likely the SNP has damaging effect, multiple scores separated by | corresponding to Ensembl_proteinid. 
+25	SIFT_converted_rankscore	A	Float	SIFTori scores were first converted to SIFTnew=1-SIFTori, then ranked among all SIFTnew scores in dbNSFP. The rankscore is the ratio of the rank the SIFTnew score over the total number of SIFTnew scores in dbNSFP. If there are multiple scores, only the most damaging (largest) rankscore is presented. The rankscores range from 0.00963 to 0.91219.
+26	SIFT_pred	A	String	If SIFTori is smaller than 0.05 (rankscore>0.395) the corresponding nsSNV is predicted as D(amaging), otherwise it is predicted as T(olerated), multiple scores separated by | corresponding to Ensembl_proteinid.
+27	Uniprot_acc_Polyphen2	A	String	Uniprot accession number provided by Polyphen2, multiple scores separated by |.
+28	Uniprot_id_Polyphen2	A	String	Uniprot ID numbers corresponding to Uniprot_acc_Polyphen2, multiple scores separated by |.
+29	Uniprot_aapos_Polyphen2	A	String	amino acid position as to Uniprot_acc_Polyphen2, multiple scores separated by |.
+30	Polyphen2_HDIV_score	A	String	Polyphen2 score based on HumDiv, i.e. hdiv_prob. The score ranges from 0 to 1, multiple entries separated by |, corresponding to Uniprot_acc_Polyphen2.
+31	Polyphen2_HDIV_rankscore	A	Float	Polyphen2 HDIV scores were first ranked among all HDIV scores in dbNSFP. The rankscore is the ratio of the rank the score over the total number of the scores in dbNSFP. If there are multiple scores, only the most damaging (largest) rankscore is presented. The scores range from 0.02634 to 0.89865.
+32	Polyphen2_HDIV_pred	A	String	Polyphen2 prediction based on HumDiv, D (probably damaging, HDIV score in [0.957,1] or rankscore in [0.52844,0.89865]), P (possibly damaging, HDIV score in [0.453,0.956] or rankscore in [0.34282,0.52689]) and B (benign, HDIV score in [0,0.452] or rankscore in [0.02634,0.34268]). Score cutoff for binary classification is 0.5 for HDIV score or 0.3528 for rankscore, i.e. the prediction is neutral if the HDIV score is smaller than 0.5 (rankscore is smaller than 0.3528), and deleterious if the HDIV score is larger than 0.5 (rankscore is larger than 0.3528). Multiple entries are separated by |.
+33	Polyphen2_HVAR_score	A	String	Polyphen2 score based on HumVar, i.e. hvar_prob. The score ranges from 0 to 1. Multiple entries separated by |, corresponding to Uniprot_acc_Polyphen2.
+34	Polyphen2_HVAR_rankscore	A	Float	Polyphen2 HVAR scores were first ranked among all HVAR scores in dbNSFP. The rankscore is the ratio of the rank the score over the total number of the scores in dbNSFP. If there are multiple scores, only the most damaging (largest) rankscore is presented. The scores range from 0.01257 to 0.97092.
+35	Polyphen2_HVAR_pred	A	String	Polyphen2 prediction based on HumVar, D (probably damaging, HVAR score in [0.909,1] or rankscore in [0.62797,0.97092]), P (possibly damaging, HVAR in [0.447,0.908] or rankscore in [0.44195,0.62727]) and B (benign, HVAR score in [0,0.446] or rankscore in [0.01257,0.44151]). Score cutoff for binary classification is 0.5 for HVAR score or 0.45833 for rankscore, i.e. the prediction is neutral if the HVAR score is smaller than 0.5 (rankscore is smaller than 0.45833), and deleterious if the HVAR score is larger than 0.5 (rankscore is larger than 0.45833). Multiple entries are separated by |.
+36	LRT_score	A	Float	The original LRT two-sided p-value (LRTori), ranges from 0 to 1.
+37	LRT_converted_rankscore	A	Float	LRTori scores were first converted as LRTnew=1-LRTori*0.5 if Omega<1, or LRTnew=LRTori*0.5 if Omega>=1. Then LRTnew scores were ranked among all LRTnew scores in dbNSFP. The rankscore is the ratio of the rank over the total number of the scores in dbNSFP. The scores range from 0.00162 to 0.84324.
+38	LRT_pred	A	Character	LRT prediction, D(eleterious), N(eutral) or U(nknown), which is not solely determined by the score. 
+39	LRT_Omega	A	Float	Estimated nonsynonymous-to-synonymous-rate ratio (Omega, reported by LRT).
+40	MutationTaster_score	A	String	MutationTaster p-value (MTori), ranges from 0 to 1. Multiple scores are separated by |. Information on corresponding transcript(s) can be found by querying http://www.mutationtaster.org/ChrPos.html.
+41	MutationTaster_converted_rankscore	A	Float	The MTori scores were first converted, if the prediction is A or D MTnew=MTori, if the prediction is N or P, MTnew=1-MTori. Then MTnew scores were ranked among all MTnew scores in dbNSFP. If there are multiple scores of a SNV, only the largest MTnew was used in ranking. The rankscore is the ratio of the rank of the score over the total number of MTnew scores in dbNSFP. The scores range from 0.08979 to 0.81033.
+42	MutationTaster_pred	A	Character	MutationTaster prediction, A (disease_causing_automatic), D (disease_causing), N (polymorphism) or P (polymorphism_automatic). The score cutoff between D and N is 0.5 for MTnew and 0.31713 for the rankscore.
+43	MutationTaster_model	A	String	MutationTaster prediction models.
+44	MutationTaster_AAE	A	String	MutationTaster predicted amino acid change.
+45	MutationAssessor_UniprotID	A	String	Uniprot ID number provided by MutationAssessor.
+46	MutationAssessor_variant	A	String	AA variant according to MutationAssessor_UniprotID.
+47	MutationAssessor_score	A	Float	MutationAssessor functional impact combined score (MAori). The score ranges from -5.135 to 6.49 in dbNSFP. 
+48	MutationAssessor_rankscore	A	Float	MAori scores were ranked among all MAori scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of MAori scores in dbNSFP. The scores range from 0 to 1.
+49	MutationAssessor_pred	A	Character	MutationAssessors functional impact of a variant, predicted functional, i.e. high (H) or medium (M), or predicted non-functional, i.e. low (L) or neutral (N). The MAori score cutoffs between H and M, M and L, and L and N, are 3.5, 1.935 and 0.8, respectively. The rankscore cutoffs between H and M, M and L, and L and N, are 0.92922, 0.51944 and 0.19719, respectively.
+50	FATHMM_score	A	String	FATHMM default score (weighted for human inherited-disease mutations with Disease Ontology) (FATHMMori). Scores range from -16.13 to 10.64. The smaller the score the more likely the SNP has damaging effect. Multiple scores separated by |, corresponding to Ensembl_proteinid.
+51	FATHMM_converted_rankscore	A	Float	FATHMMori scores were first converted to FATHMMnew=1-(FATHMMori+16.13)/26.77, then ranked among all FATHMMnew scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of FATHMMnew scores in dbNSFP. If there are multiple scores, only the most damaging (largest) rankscore is presented. The scores range from 0 to 1.
+52	FATHMM_pred	A	String	If a FATHMMori score is <=-1.5 (or rankscore >=0.81332) the corresponding nsSNV is predicted as D(AMAGING); otherwise it is predicted as T(OLERATED).Multiple predictions separated by |, corresponding to Ensembl_proteinid.
+53	PROVEAN_score	A	String	PROVEAN score (PROVEANori). Scores range from -14 to 14. The smaller the score the more likely the SNP has damaging effect. Multiple scores separated by |, corresponding to Ensembl_proteinid.
+54	PROVEAN_converted_rankscore	A	Float	PROVEANori were first converted to PROVEANnew=1-(PROVEANori+14)/28, then ranked among all PROVEANnew scores in dbNSFP. The rankscore is the ratio of the rank the PROVEANnew score over the total number of PROVEANnew scores in dbNSFP. If there are multiple scores, only the most damaging (largest) rankscore is presented. The scores range from 0 to 1.
+55	PROVEAN_pred	A	String	If PROVEANori <= -2.5 (rankscore>=0.543) the corresponding nsSNV is predicted as D(amaging); otherwise it is predicted as N(eutral). Multiple predictions separated by |, corresponding to Ensembl_proteinid.
+56	Transcript_id_VEST3	A	String	Transcript id provided by VEST3.
+57	Transcript_var_VEST3	A	String	Amino acid change as to Transcript_id_VEST3.
+58	VEST3_score	A	String	VEST 3.0 score. Score ranges from 0 to 1. The larger the score the more likely the mutation may cause functional change. Multiple scores separated by |, corresponding to Transcript_id_VEST3.
+59	VEST3_rankscore	A	Float	VEST3 scores were ranked among all VEST3 scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of VEST3 scores in dbNSFP. In case there are multiple scores for the same variant, the largest score (most damaging) is presented. The scores range from 0 to 1. 
+60	MetaSVM_score	A	Float	Our support vector machine (SVM) based ensemble prediction score, which incorporated 10 scores (SIFT, PolyPhen-2 HDIV, PolyPhen-2 HVAR, GERP++, MutationTaster, Mutation Assessor, FATHMM, LRT, SiPhy, PhyloP) and the maximum frequency observed in the 1000 genomes populations. Larger value means the SNV is more likely to be damaging. Scores range from -2 to 3 in dbNSFP.
+61	MetaSVM_rankscore	A	Float	MetaSVM scores were ranked among all MetaSVM scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of MetaSVM scores in dbNSFP. The scores range from 0 to 1.
+62	MetaSVM_pred	A	Character	Prediction of our SVM based ensemble prediction score, T(olerated) or D(amaging). The score cutoff between D and T is 0. The rankscore cutoff between D and T is 0.82268.
+63	MetaLR_score	A	Float	Our logistic regression (LR) based ensemble prediction score, which incorporated 10 scores (SIFT, PolyPhen-2 HDIV, PolyPhen-2 HVAR, GERP++, MutationTaster, Mutation Assessor, FATHMM, LRT, SiPhy, PhyloP) and the maximum frequency observed in the 1000 genomes populations. Larger value means the SNV is more likely to be damaging. Scores range from 0 to 1.
+64	MetaLR_rankscore	A	Float	MetaLR scores were ranked among all MetaLR scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of MetaLR scores in dbNSFP. The scores range from 0 to 1.
+65	MetaLR_pred	A	Character	Prediction of our MetaLR based ensemble prediction score, T(olerated) or D(amaging). The score cutoff between D and T is 0.5. The rankscore cutoff between D and T is 0.81113.
+66	Reliability_index	A	Float	Number of observed component scores (except the maximum frequency in the 1000 genomes populations) for MetaSVM and MetaLR. Ranges from 1 to 10. As MetaSVM and MetaLR scores are calculated based on imputed data, the less missing component scores, the higher the reliability of the scores and predictions. 
+67	M-CAP_score	A	Float	M-CAP score (details in DOI	10.1038/ng.3703). Scores range from 0 to 1. The larger the score the more likely the SNP has damaging effect. 
+68	M-CAP_rankscore	A	Float	M-CAP scores were ranked among all M-CAP scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of M-CAP scores in dbNSFP.
+69	M-CAP_pred	A	Character	Prediction of M-CAP score based on the authors recommendation, T(olerated) or D(amaging). The score cutoff between D and T is 0.025.
+70	REVEL_score	A	Float	REVEL is an ensemble score based on 13 individual scores for predicting the pathogenicity of missense variants. Scores range from 0 to 1. The larger the score the more likely the SNP has damaging effect.
+71	REVEL_rankscore	A	Float	REVEL scores were ranked among all REVEL scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of REVEL scores in dbNSFP.
+72	MutPred_score	A	Float	General MutPred score. Scores range from 0 to 1. The larger the score the more likely the SNP has damaging effect.
+73	MutPred_rankscore	A	Float	MutPred scores were ranked among all MutPred scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of MutPred scores in dbNSFP.
+74	MutPred_protID	A	String	UniProt accession or Ensembl transcript ID used for MutPred_score calculation.
+75	MutPred_AAchange	A	String	Amino acid change used for MutPred_score calculation.
+76	MutPred_Top5features	A	String	Top 5 features (molecular mechanisms of disease) as predicted by MutPred with p values. MutPred_score > 0.5 and p < 0.05 are referred to as actionable hypotheses. MutPred_score > 0.75 and p < 0.05 are referred to as confident hypotheses. MutPred_score > 0.75 and p < 0.01 are referred to as very confident hypotheses.
+77	CADD_raw	A	Float	CADD raw score for functional prediction of a SNP. Please refer to Kircher et al. (2014) Nature Genetics 46(3):310-5 for details. The larger the score the more likely the SNP has damaging effect. Scores range from -7.535037 to 35.788538 in dbNSFP. 
+78	CADD_raw_rankscore	A	Float	CADD raw scores were ranked among all CADD raw scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of CADD raw scores in dbNSFP. 
+79	CADD_phred	A	Float	CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores. Please refer to Kircher et al. (2014) Nature Genetics 46(3):310-5 for details. The larger the score the more likely the SNP has damaging effect. 
+80	DANN_score	A	Float	DANN is a functional prediction score retrained based on the training data of CADD using deep neural network. Scores range from 0 to 1. A larger number indicate a higher probability to be damaging. More information of this score can be found in doi	10.1093/bioinformatics/btu703.
+81	DANN_rankscore	A	Float	DANN scores were ranked among all DANN scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of DANN scores in dbNSFP.
+82	fathmm-MKL_coding_score	A	Float	fathmm-MKL p-values. Scores range from 0 to 1. SNVs with scores >0.5 are predicted to be deleterious, and those <0.5 are predicted to be neutral or benign. Scores close to 0 or 1 are with the highest-confidence. Coding scores are trained using 10 groups of features. More details of the score can be found in doi 10.1093/bioinformatics/btv009.
+83	fathmm-MKL_coding_rankscore	A	Float	fathmm-MKL coding scores were ranked among all fathmm-MKL coding scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of fathmm-MKL coding scores in dbNSFP.
+84	fathmm-MKL_coding_pred	A	Character	If a fathmm-MKL_coding_score is >0.5 (or rankscore >0.28317) the corresponding nsSNV is predicted as D(AMAGING); otherwise it is predicted as N(EUTRAL).
+85	fathmm-MKL_coding_group	A	Character	the groups of features (labeled A-J) used to obtained the score. More details can be found in doi	10.1093/bioinformatics/btv009.
+86	Eigen_coding_or_noncoding	A	String	Whether Eigen-raw and Eigen-phred scores are based on coding model or noncoding model.
+87	Eigen-raw	A	Float	Eigen score for coding SNVs. A functional prediction score based on conservation, allele frequencies, and deleteriousness prediction using an unsupervised learning method (doi 10.1038/ng.3477). 
+88	Eigen-phred	A	Float	Eigen score in phred scale.
+89	Eigen-PC-raw	A	Float	Eigen PC score for genome-wide SNVs. A functional prediction score based on conservation, allele frequencies, deleteriousness prediction (for missense SNVs) and epigenomic signals (for synonymous and non-coding SNVs) using an unsupervised learning method (doi 10.1038/ng.3477). 
+90	Eigen-PC-phred	A	Float	Eigen PC score in phred scale.
+91	Eigen-PC-raw_rankscore	A	Float	Eigen-PC-raw scores were ranked among all Eigen-PC-raw scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of Eigen-PC-raw scores in dbNSFP.
+92	GenoCanyon_score	A	Float	A functional prediction score based on conservation and biochemical annotations using an unsupervised statistical learning. (doi:10.1038/srep10576)
+93	GenoCanyon_rankscore	A	Float	GenoCanyon_score scores were ranked among all integrated fitCons scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of GenoCanyon_score scores in dbNSFP.
+94	integrated_fitCons_score	A	Float	fitCons score predicts the fraction of genomic positions belonging to a specific function class (defined by epigenomic fingerprint) that are under selective pressure. Scores range from 0 to 1, with a larger score indicating a higher proportion of nucleic sites of the functional class the genomic position belong to are under selective pressure, therefore more likely to be functional important. Integrated (i6) scores are integrated across three cell types (GM12878, H1-hESC and HUVEC). More details can be found in doi 10.1038/ng.3196.
+95	integrated_fitCons_rankscore	A	Float	integrated fitCons scores were ranked among all integrated fitCons scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of integrated fitCons scores in dbNSFP.
+96	integrated_confidence_value	A	Integer	0 - highly significant scores (approx. p<.003), 1 - significant scores (approx. p<.05), 2 - informative scores (approx. p<.25), 3 - other scores (approx. p>=.25).
+97	GM12878_fitCons_score	A	Float	fitCons score predicts the fraction of genomic positions belonging to a specific function class (defined by epigenomic fingerprint) that are under selective pressure. Scores range from 0 to 1, with a larger score indicating a higher proportion of nucleic sites of the functional class the genomic position belong to are under selective pressure, therefore more likely to be functional important. GM12878 fitCons scores are based on cell type GM12878. More details can be found in doi 10.1038/ng.3196.
+98	GM12878_fitCons_rankscore	A	Float	GM12878 fitCons scores were ranked among all GM12878 fitCons scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of GM12878 fitCons scores in dbNSFP.
+99	GM12878_confidence_value	A	Integer	0 - highly significant scores (approx. p<.003), 1 - significant scores (approx. p<.05), 2 - informative scores (approx. p<.25), 3 - other scores (approx. p>=.25).
+100	H1-hESC_fitCons_score	A	Float	fitCons score predicts the fraction of genomic positions belonging to a specific function class (defined by epigenomic fingerprint) that are under selective pressure. Scores range from 0 to 1, with a larger score indicating a higher proportion of nucleic sites of the functional class the genomic position belong to are under selective pressure, therefore more likely to be functional important. GM12878 fitCons scores are based on cell type H1-hESC. More details can be found in doi 10.1038/ng.3196.
+101	H1-hESC_fitCons_rankscore	A	Float	H1-hESC fitCons scores were ranked among all H1-hESC fitCons scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of H1-hESC fitCons scores in dbNSFP.
+102	H1-hESC_confidence_value	A	Float	0 - highly significant scores (approx. p<.003), 1 - significant scores (approx. p<.05), 2 - informative scores (approx. p<.25), 3 - other scores (approx. p>=.25).
+103	HUVEC_fitCons_score	A	Float	fitCons score predicts the fraction of genomic positions belonging to a specific function class (defined by epigenomic fingerprint) that are under selective pressure. Scores range from 0 to 1, with a larger score indicating a higher proportion of nucleic sites of the functional class the genomic position belong to are under selective pressure, therefore more likely to be functional important. GM12878 fitCons scores are based on cell type HUVEC. More details can be found in doi 10.1038/ng.3196.
+104	HUVEC_fitCons_rankscore	A	Float	HUVEC fitCons scores were ranked among all HUVEC fitCons scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of HUVEC fitCons scores in dbNSFP.
+105	HUVEC_confidence_value	A	Integer	0 - highly significant scores (approx. p<.003), 1 - significant scores (approx. p<.05), 2 - informative scores (approx. p<.25), 3 - other scores (approx. p>=.25).
+106	GERP2_NR	A	Float	GERP++ neutral rate
+107	GERP2_RS	A	Float	GERP++ RS score, the larger the score, the more conserved the site. Scores range from -12.3 to 6.17.
+108	GERP2_RS_rankscore	A	Float	GERP++ RS scores were ranked among all GERP++ RS scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of GERP++ RS scores in dbNSFP.
+109	phyloP100way_vertebrate	A	Float	phyloP (phylogenetic p-values) conservation score based on the multiple alignments of 100 vertebrate genomes (including human). The larger the score, the more conserved the site. Scores range from -20.0 to 10.003 in dbNSFP.
+110	phyloP100way_vertebrate_rankscore	A	Float	phyloP100way_vertebrate scores were ranked among all phyloP100way_vertebrate scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of phyloP100way_vertebrate scores in dbNSFP.
+111	phyloP20way_mammalian	A	Float	phyloP (phylogenetic p-values) conservation score based on the multiple alignments of 20 mammalian genomes (including human). The larger the score, the more conserved the site. Scores range from -13.282 to 1.199 in dbNSFP.
+112	phyloP20way_mammalian_rankscore	A	Float	phyloP20way_mammalian scores were ranked among all phyloP20way_mammalian scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of phyloP20way_mammalian scores in dbNSFP.
+113	phastCons100way_vertebrate	A	Float	phastCons conservation score based on the multiple alignments of 100 vertebrate genomes (including human). The larger the score, the more conserved the site. Scores range from 0 to 1. 
+114	phastCons100way_vertebrate_rankscore	A	Float	phastCons100way_vertebrate scores were ranked among all phastCons100way_vertebrate scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of phastCons100way_vertebrate scores in dbNSFP.
+115	phastCons20way_mammalian	A	Float	phastCons conservation score based on the multiple alignments of 20 mammalian genomes (including human). The larger the score, the more conserved the site. Scores range from 0 to 1. 
+116	phastCons20way_mammalian_rankscore	A	Float	phastCons20way_mammalian scores were ranked among all phastCons20way_mammalian scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of phastCons20way_mammalian scores in dbNSFP.
+117	SiPhy_29way_pi	A	String	The estimated stationary distribution of A, C, G and T at the site (separated by |), using SiPhy algorithm based on 29 mammals genomes. 
+118	SiPhy_29way_logOdds	A	Float	SiPhy score based on 29 mammals genomes. The larger the score, the more conserved the site. Scores range from 0 to 37.9718 in dbNSFP.
+119	SiPhy_29way_logOdds_rankscore	A	Float	SiPhy_29way_logOdds scores were ranked among all SiPhy_29way_logOdds scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of SiPhy_29way_logOdds scores in dbNSFP.
+120	1000Gp3_AC	A	Integer	Alternative allele counts in the whole 1000 genomes phase 3 (1000Gp3) data.
+121	1000Gp3_AF	A	Float	Alternative allele frequency in the whole 1000Gp3 data.
+122	1000Gp3_AFR_AC	A	Integer	Alternative allele counts in the 1000Gp3 African descendent samples.
+123	1000Gp3_AFR_AF	A	Float	Alternative allele frequency in the 1000Gp3 African descendent samples.
+124	1000Gp3_EUR_AC	A	Integer	Alternative allele counts in the 1000Gp3 European descendent samples.
+125	1000Gp3_EUR_AF	A	Float	Alternative allele frequency in the 1000Gp3 European descendent samples.
+126	1000Gp3_AMR_AC	A	Integer	Alternative allele counts in the 1000Gp3 American descendent samples.
+127	1000Gp3_AMR_AF	A	Float	Alternative allele frequency in the 1000Gp3 American descendent samples.
+128	1000Gp3_EAS_AC	A	Integer	Alternative allele counts in the 1000Gp3 East Asian descendent samples.
+129	1000Gp3_EAS_AF	A	Float	Alternative allele frequency in the 1000Gp3 East Asian descendent samples.
+130	1000Gp3_SAS_AC	A	Integer	Alternative allele counts in the 1000Gp3 South Asian descendent samples.
+131	1000Gp3_SAS_AF	A	Float	Alternative allele frequency in the 1000Gp3 South Asian descendent samples.
+132	TWINSUK_AC	A	Integer	Alternative allele count in called genotypes in UK10K TWINSUK cohort.
+133	TWINSUK_AF	A	Float	Alternative allele frequency in called genotypes in UK10K TWINSUK cohort.
+134	ALSPAC_AC	A	Integer	Alternative allele count in called genotypes in UK10K ALSPAC cohort.
+135	ALSPAC_AF	A	Float	Alternative allele frequency in called genotypes in UK10K ALSPAC cohort.
+136	ESP6500_AA_AC	A	Integer	Alternative allele count in the African American samples of the NHLBI GO Exome Sequencing Project (ESP6500 data set).
+137	ESP6500_AA_AF	A	Float	Alternative allele frequency in the African American samples of the NHLBI GO Exome Sequencing Project (ESP6500 data set).
+138	ESP6500_EA_AC	A	Integer	Alternative allele count in the European American samples of the NHLBI GO Exome Sequencing Project (ESP6500 data set).
+139	ESP6500_EA_AF	A	Float	Alternative allele frequency in the European American samples of the NHLBI GO Exome Sequencing Project (ESP6500 data set).
+140	ExAC_AC	A	Integer	Allele count in total ExAC samples (60,706 samples).
+141	ExAC_AF	A	Float	Allele frequency in total ExAC samples.
+142	ExAC_Adj_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in total ExAC samples.
+143	ExAC_Adj_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in total ExAC samples.
+144	ExAC_AFR_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in African & African American ExAC samples.
+145	ExAC_AFR_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in African & African American ExAC samples.
+146	ExAC_AMR_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in American ExAC samples.
+147	ExAC_AMR_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in American ExAC samples.
+148	ExAC_EAS_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in East Asian ExAC samples.
+149	ExAC_EAS_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in East Asian ExAC samples.
+150	ExAC_FIN_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in Finnish ExAC samples.
+151	ExAC_FIN_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in Finnish ExAC samples.
+152	ExAC_NFE_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in Non-Finnish European ExAC samples.
+153	ExAC_NFE_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in Non-Finnish European ExAC samples.
+154	ExAC_SAS_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in South Asian ExAC samples.
+155	ExAC_SAS_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in South Asian ExAC samples.
+156	ExAC_nonTCGA_AC	A	Integer	Allele count in total ExAC_nonTCGA samples (53,105 samples).
+157	ExAC_nonTCGA_AF	A	Float	Allele frequency in total ExAC_nonTCGA samples.
+158	ExAC_nonTCGA_Adj_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in total ExAC_nonTCGA samples.
+159	ExAC_nonTCGA_Adj_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in total ExAC_nonTCGA samples.
+160	ExAC_nonTCGA_AFR_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in African & African American ExAC_nonTCGA samples.
+161	ExAC_nonTCGA_AFR_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in African & African American ExAC_nonTCGA samples.
+162	ExAC_nonTCGA_AMR_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in American ExAC_nonTCGA samples.
+163	ExAC_nonTCGA_AMR_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in American ExAC_nonTCGA samples.
+164	ExAC_nonTCGA_EAS_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in East Asian ExAC_nonTCGA samples.
+165	ExAC_nonTCGA_EAS_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in East Asian ExAC_nonTCGA samples.
+166	ExAC_nonTCGA_FIN_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in Finnish ExAC_nonTCGA samples.
+167	ExAC_nonTCGA_FIN_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in Finnish ExAC_nonTCGA samples.
+168	ExAC_nonTCGA_NFE_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in Non-Finnish European ExAC_nonTCGA samples.
+169	ExAC_nonTCGA_NFE_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in Non-Finnish European ExAC_nonTCGA samples.
+170	ExAC_nonTCGA_SAS_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in South Asian ExAC_nonTCGA samples.
+171	ExAC_nonTCGA_SAS_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in South Asian ExAC_nonTCGA samples.
+172	ExAC_nonpsych_AC	A	Integer	Allele count in total ExAC_nonpsych samples (45,376 samples).
+173	ExAC_nonpsych_AF	A	Float	Allele frequency in total ExAC_nonpsych samples.
+174	ExAC_nonpsych_Adj_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in total ExAC_nonpsych samples.
+175	ExAC_nonpsych_Adj_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in total ExAC_nonpsych samples.
+176	ExAC_nonpsych_AFR_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in African & African American ExAC_nonpsych samples.
+177	ExAC_nonpsych_AFR_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in African & African American ExAC_nonpsych samples.
+178	ExAC_nonpsych_AMR_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in American ExAC_nonpsych samples.
+179	ExAC_nonpsych_AMR_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in American ExAC_nonpsych samples.
+180	ExAC_nonpsych_EAS_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in East Asian ExAC_nonpsych samples.
+181	ExAC_nonpsych_EAS_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in East Asian ExAC_nonpsych samples.
+182	ExAC_nonpsych_FIN_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in Finnish ExAC_nonpsych samples.
+183	ExAC_nonpsych_FIN_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in Finnish ExAC_nonpsych samples.
+184	ExAC_nonpsych_NFE_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in Non-Finnish European ExAC_nonpsych samples.
+185	ExAC_nonpsych_NFE_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in Non-Finnish European ExAC_nonpsych samples.
+186	ExAC_nonpsych_SAS_AC	A	Integer	Adjusted Alt allele counts (DP >= 10 & GQ >= 20) in South Asian ExAC_nonpsych samples.
+187	ExAC_nonpsych_SAS_AF	A	Float	Adjusted Alt allele frequency (DP >= 10 & GQ >= 20) in South Asian ExAC_nonpsych samples.
+188	gnomAD_exomes_AC	A	Integer	Alternative allele count in the whole gnomAD exome samples (123,136 samples).
+189	gnomAD_exomes_AN	A	Integer	Total allele count in the whole gnomAD exome samples (123,136 samples).
+190	gnomAD_exomes_AF	A	Float	Alternative allele frequency in the whole gnomAD exome samples (123,136 samples).
+191	gnomAD_exomes_AFR_AC	A	Integer	Alternative allele count in the African/African American gnomAD exome samples (7,652 samples).
+192	gnomAD_exomes_AFR_AN	A	Integer	Total allele count in the African/African American gnomAD exome samples (7,652 samples).
+193	gnomAD_exomes_AFR_AF	A	Float	Alternative allele frequency in the African/African American gnomAD exome samples (7,652 samples).
+194	gnomAD_exomes_AMR_AC	A	Integer	Alternative allele count in the Latino gnomAD exome samples (16,791 samples).
+195	gnomAD_exomes_AMR_AN	A	Integer	Total allele count in the Latino gnomAD exome samples (16,791 samples).
+196	gnomAD_exomes_AMR_AF	A	Float	Alternative allele frequency in the Latino gnomAD exome samples (16,791 samples).
+197	gnomAD_exomes_ASJ_AC	A	Integer	Alternative allele count in the Ashkenazi Jewish gnomAD exome samples (4,925 samples).
+198	gnomAD_exomes_ASJ_AN	A	Integer	Total allele count in the Ashkenazi Jewish gnomAD exome samples (4,925 samples).
+199	gnomAD_exomes_ASJ_AF	A	Float	Alternative allele frequency in the Ashkenazi Jewish gnomAD exome samples (4,925 samples).
+200	gnomAD_exomes_EAS_AC	A	Integer	Alternative allele count in the East Asian gnomAD exome samples (8,624 samples).
+201	gnomAD_exomes_EAS_AN	A	Integer	Total allele count in the East Asian gnomAD exome samples (8,624 samples).
+202	gnomAD_exomes_EAS_AF	A	Float	Alternative allele frequency in the East Asian gnomAD exome samples (8,624 samples).
+203	gnomAD_exomes_FIN_AC	A	Integer	Alternative allele count in the Finnish gnomAD exome samples (11,150 samples).
+204	gnomAD_exomes_FIN_AN	A	Integer	Total allele count in the Finnish gnomAD exome samples (11,150 samples).
+205	gnomAD_exomes_FIN_AF	A	Float	Alternative allele frequency in the Finnish gnomAD exome samples (11,150 samples).
+206	gnomAD_exomes_NFE_AC	A	Integer	Alternative allele count in the Non-Finnish European gnomAD exome samples (55,860 samples).
+207	gnomAD_exomes_NFE_AN	A	Integer	Total allele count in the Non-Finnish European gnomAD exome samples (55,860 samples).
+208	gnomAD_exomes_NFE_AF	A	Float	Alternative allele frequency in the Non-Finnish European gnomAD exome samples (55,860 samples).
+209	gnomAD_exomes_SAS_AC	A	Integer	Alternative allele count in the South Asian gnomAD exome samples (15,391 samples).
+210	gnomAD_exomes_SAS_AN	A	Integer	Total allele count in the South Asian gnomAD exome samples (15,391 samples).
+211	gnomAD_exomes_SAS_AF	A	Float	Alternative allele frequency in the South Asian gnomAD exome samples (15,391 samples).
+212	gnomAD_exomes_OTH_AC	A	Integer	Alternative allele count in other gnomAD exome samples (2,743 samples).
+213	gnomAD_exomes_OTH_AN	A	Integer	Total allele count in other gnomAD exome samples (2,743 samples).
+214	gnomAD_exomes_OTH_AF	A	Float	Alternative allele frequency in other gnomAD exome samples (2,743 samples).
+215	gnomAD_genomes_AC	A	Integer	Alternative allele count in the whole gnomAD genome samples (15,496 samples).
+216	gnomAD_genomes_AN	A	Integer	Total allele count in the whole gnomAD genome samples (15,496 samples).
+217	gnomAD_genomes_AF	A	Float	Alternative allele frequency in the whole gnomAD genome samples (15,496 samples).
+218	gnomAD_genomes_AFR_AC	A	Integer	Alternative allele count in the African/African American gnomAD genome samples (4,368 samples).
+219	gnomAD_genomes_AFR_AN	A	Integer	Total allele count in the African/African American gnomAD genome samples (4,368 samples).
+220	gnomAD_genomes_AFR_AF	A	Float	Alternative allele frequency in the African/African American gnomAD genome samples (4,368 samples).
+221	gnomAD_genomes_AMR_AC	A	Integer	Alternative allele count in the Latino gnomAD genome samples (419 samples).
+222	gnomAD_genomes_AMR_AN	A	Integer	Total allele count in the Latino gnomAD genome samples (419 samples).
+223	gnomAD_genomes_AMR_AF	A	Float	Alternative allele frequency in the Latino gnomAD genome samples (419 samples).
+224	gnomAD_genomes_ASJ_AC	A	Integer	Alternative allele count in the Ashkenazi Jewish gnomAD genome samples (151 samples).
+225	gnomAD_genomes_ASJ_AN	A	Integer	Total allele count in the Ashkenazi Jewish gnomAD genome samples (151 samples).
+226	gnomAD_genomes_ASJ_AF	A	Float	Alternative allele frequency in the Ashkenazi Jewish gnomAD genome samples (151 samples).
+227	gnomAD_genomes_EAS_AC	A	Integer	Alternative allele count in the East Asian gnomAD genome samples (811 samples).
+228	gnomAD_genomes_EAS_AN	A	Integer	Total allele count in the East Asian gnomAD genome samples (811 samples).
+229	gnomAD_genomes_EAS_AF	A	Float	Alternative allele frequency in the East Asian gnomAD genome samples (811 samples).
+230	gnomAD_genomes_FIN_AC	A	Integer	Alternative allele count in the Finnish gnomAD genome samples (1,747 samples).
+231	gnomAD_genomes_FIN_AN	A	Integer	Total allele count in the Finnish gnomAD genome samples (1,747 samples).
+232	gnomAD_genomes_FIN_AF	A	Float	Alternative allele frequency in the Finnish gnomAD genome samples (1,747 samples).
+233	gnomAD_genomes_NFE_AC	A	Integer	Alternative allele count in the Non-Finnish European gnomAD genome samples (7,509 samples).
+234	gnomAD_genomes_NFE_AN	A	Integer	Total allele count in the Non-Finnish European gnomAD genome samples (7,509 samples).
+235	gnomAD_genomes_NFE_AF	A	Float	Alternative allele frequency in the Non-Finnish European gnomAD genome samples (7,509 samples).
+236	gnomAD_genomes_OTH_AC	A	Integer	Alternative allele count in other gnomAD genome samples (491 samples).
+237	gnomAD_genomes_OTH_AN	A	Integer	Total allele count in other gnomAD genome samples (491 samples).
+238	gnomAD_genomes_OTH_AF	A	Float	Alternative allele frequency in other gnomAD genome samples (491 samples).
+239	clinvar_rs	A	String	rs number from the clinvar data set.
+240	clinvar_clnsig	.	Integer	Clinical significance as to the clinvar data set. 0 - unknown, 1 - untested, 2 - Benign, 3 - Likely benign, 4 - Likely pathogenic, 5 - Pathogenic, 6 - drug response, 7 - histocompatibility. A negative score means the the score is for the ref allele.
+241	clinvar_trait	A	String	The trait/disease to which the clinvar_clnsig is referring.
+242	clinvar_golden_stars	.	Integer	ClinVar Review Status summary. 0 - no assertion criteria provided, 1 - criteria provided, single submitter, 2 - criteria provided, multiple submitters, no conflicts, 3 - reviewed by expert panel, 4 - practice guideline.
+243	Interpro_domain	A	String	Domain or conserved site on which the variant locates. Domain annotations come from Interpro database. The number in the brackets following a specific domain is the count of times Interpro assigns the variant position to that domain, typically coming from different predicting databases. Multiple entries separated by |.
+244	GTEx_V6p_gene	A	String	Target gene of the (significant) eQTL SNP.
+245	GTEx_V6p_tissue	A	String	Tissue type of the expression data with which the eQTL/gene pair is detected.
+

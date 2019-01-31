@@ -1,0 +1,3 @@
+##columns	#chr    pos     pos ref     alt
+##column tag	Number	Type	Description
+5	score	A	Float	DANN uses the same feature set and training data as CADD to train a deep neural network (DNN) to differentiate evolutionarily derived, likely benign, alleles from simulated, likely deleterious, variants (see Bioinformatics. 2015, 31:761–763). DANN achieves about a 19% relative reduction in the error rate and about a 14% relative increase in the area under the curve (AUC) metric over CADD’s SVM methodology. Ranges from 0-1.

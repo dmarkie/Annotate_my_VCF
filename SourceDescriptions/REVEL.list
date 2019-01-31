@@ -1,0 +1,3 @@
+##columns	#chr	pos	pos	ref	alt
+##column tag	Number	Type	Description
+5	score	A	Float	An ensemble method for predicting the pathogenicity of missense variants on the basis of individual tools: MutPred, FATHMM, VEST, PolyPhen, SIFT, PROVEAN, MutationAssessor, MutationTaster, LRT, GERP, SiPhy, phyloP, and phastCons. Scores are 0-1, with higher scores predicting pathogenicity.  

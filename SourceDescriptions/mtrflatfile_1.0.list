@@ -1,0 +1,11 @@
+##columns	#Chromosome_name	Genomic_position	Genomic_position	ref	alt
+##column tag	Number	Type	Description
+5	feature	.	String	Ensembl transcript or transcripts. There will be an entry for each transcript if there is more than one, and if the site is multiallelic the same transcript will have an entry for each allele
+6	protein_position	.	Integer	The position in the protein encoded by the corresponding transcript
+7	consequence	.	String	The predicted consequence in the corresponding transcript
+8	missyn_tally	.	Integer	Unclear
+9	mtr_obs	.	Float	Unclear
+10	mtr_exp	.	Float	Unclear
+11	score	.	Float	The MTR aims to quantify the amount of purifying selection acting specifically on missense variants in a given window of protein-coding sequence
+12	FDR	.	Float	False discovery rate
+13	centile	.	Float	Centile

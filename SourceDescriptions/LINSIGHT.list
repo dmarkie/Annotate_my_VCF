@@ -1,0 +1,5 @@
+##columns	1	2	3
+##column tag	Number	Type	Description
+4	id	1	String	Not a useful annotation
+5	score	1	Float	Prediction of noncoding nucleotide sites at which mutations are likely to have deleterious fitness consequences, and which therefore are likely to be phenotypically important. LINSIGHT combines a generalized linear model for functional genomic data with a probabilistic model of molecular evolution. Range 0-1.
+

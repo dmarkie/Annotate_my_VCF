@@ -1,0 +1,17 @@
+##columns	#chr	pos(1-coor)	pos(1-coor)	ref	alt
+##column tag	Number	Type	Description
+5	gene_name	A	String	HGNC gene name for MPC scores
+6	ENST	A	String	Ensembl canonical transcript name for MPC scores
+7	ENSG	A	String	Ensembl gene name for MPC scores
+8	CCDS	A	String	CCDS gene identifier
+9	Consequence	A	String	Predicted change type
+10	HGVSc	A	String	Predicted consequence for the cDNA using HGVS format
+11	HGVSp	A	String	Predicted consequence for the protein using HGVS format
+12	Amino_acids	A	String	Amino acid change ref/alt
+13	context	A	String	Base context over three bases - one each side
+14	SIFT	A	String	SIFT prediction
+15	PolyPhen	A	String	Polyphen prediction from MPC
+16	obs_exp	A	Float	Fraction of observed missense variants versus expected for this constraint region
+17	mis_badness	A	Float	A measure of the deleteriousness of the amino acid substitution when it occurs in a constrained region as determined by missense constraint - see MPC. Range 0-1, with 1 being most deleterious.
+18	fitted_score	A	Float	Unclear
+19	score	A	Float	A score combining missense badness, polyphen-2 and missense regional constraint. See https://www.biorxiv.org/content/early/2017/06/12/148353. Range from 0 to 5, with larger numbers indicating increased deleteriousness.
