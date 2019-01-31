@@ -180,7 +180,7 @@ fi
 if [[ ${vep} == "yes" ]] || [[ ${usedefaults} == "yes" ]]; then
 	vepspecies="${defaultvepspecies}"
 	vepassembly="${defaultvepassembly}"
-	BCSQ="${defaultBCQSP}"
+	BCSQ="${defaultBCSQ}"
 elif [ -z ${vep} ]; then
 	while [[ ${vep} != "yes" ]] && [[ ${vep} != "no" ]] ; do
 		echo -e "\nWould you like to annotate with VEP?"
