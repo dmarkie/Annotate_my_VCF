@@ -912,19 +912,13 @@ if [ ! -f ${parameterfile} ]; then
 	echo "CONTIGSTRING=${CONTIGSTRING}" >> ${parameterfile}
 	echo "contigarraynumber=${contigarraynumber}" >> ${parameterfile}
 	echo "snpeff=${snpeff}" >> ${parameterfile}
-	if [[ ${snpeff} == "yes" ]]; then
-		echo "snpeff_format=${snpeff_format}" >> ${parameterfile}
-		echo "snpeffdataversion=${snpeffdataversion}" >> ${parameterfile}
-	fi
+	echo "snpeff_format=${snpeff_format}" >> ${parameterfile}
+	echo "snpeffdataversion=${snpeffdataversion}" >> ${parameterfile}
 	echo "vep=${vep}" >> ${parameterfile}
-	if [[ ${vep} == "yes" ]]; then
-		echo "vepassembly=${vepassembly}" >> ${parameterfile}
-		echo "vepspecies=${vepspecies}" >> ${parameterfile}
-		echo "BCSQ=${BCSQ}" >> ${parameterfile}
-		if [[ ${BCSQ} == "yes" ]]; then
-			echo "GFF3forBCSQ=${GFF3forBCSQ}" >> ${parameterfile}
-		fi
-	fi
+	echo "vepassembly=${vepassembly}" >> ${parameterfile}
+	echo "vepspecies=${vepspecies}" >> ${parameterfile}
+	echo "BCSQ=${BCSQ}" >> ${parameterfile}
+	echo "GFF3forBCSQ=${GFF3forBCSQ}" >> ${parameterfile}
 	echo "sourcetagarray=(${sourcetagarray[@]})" >> ${parameterfile}
 	echo "sourcefilearray=(${sourcefilearray[@]})" >> ${parameterfile}
 	echo "filetypearray=(${filetypearray[@]})" >> ${parameterfile}
