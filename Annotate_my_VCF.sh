@@ -76,7 +76,7 @@ else
 		exit 1
 	fi
 fi
-BASEDIR=$(dirname $0)
+export BASEDIR=$(dirname $0)
 ## if $2 is a file then source it for your specified default annotations, otherwise source a standard file 
 ## will need to write this to parameters so it can be picked up on restart
 if [ -z $2 ]; then
@@ -176,14 +176,35 @@ elif [ -z ${snpeff} ]; then
 		done
 	fi
 fi
+## run bcftools csq
+if [ -z ${BCSQ} ]; then
+	while [[ ${BCSQ} != "yes" ]] && [[ ${BCSQ} != "no" ]] ; do
+		echo -e "\nWould you like to annotate with bcftools CSQ (BCSQ annotation)?\nThis annotation requires the file to have the Ensembl Variant Effect Predictor's CSQ annotation.\nIf your input VCF is not already annotated using VEP then include it when asked.\n Note that this step will fail and should be avoided if any individuals have three or more alleles at any position eg XXX, XXY, XYY or trisomy 21."
+		read -e -p "Type \"yes\" to annotate with BCSQ, \"no\" to skip, or q to quit, and press [RETURN]: " BCSQ
+		if [[ ${BCSQ} == "q" ]]; then exit; fi;
+	done
+fi
+if [ ${BCSQ} = yes ]; then
+	while [ -z ${GFF3forBCSQ} ] || [ ! -f ${GFF3forBCSQ} ]; do
+		echo -e "\nSelect a suitable Ensembl GFF3 file containing transcript information for use by the BCSQ annotation."
+		read -e -p "Type the filename here, or q to quit, and press [RETURN]: " GFF3forBCSQ
+		if [[ ${GFF3forBCSQ} == "q" ]]; then exit; fi;
+	done
+fi
+#if [ ${BCSQ} = yes ]; then
+#	while [[ ${Xcludedsamples} = "unknown" ]]; do
+#		echo -e "\nBCSQ will not work on trisomic calls.\nTo exclude BCSQ annotation of the X chromosome for XXX females enter\na comma delimited list of XXX sample names in your cohort,"
+#		read -e -p "or leave empty if none, or q to quit, and press [RETURN]: " Xcludedsamples
+#		if [[ ${Xcludedsamples} == "q" ]]; then exit; fi;
+#	done
+#fi
 ## run VEP
 if [[ ${vep} == "yes" ]] || [[ ${usedefaults} == "yes" ]]; then
 	vepspecies="${defaultvepspecies}"
 	vepassembly="${defaultvepassembly}"
-	BCSQ="${defaultBCSQ}"
 elif [ -z ${vep} ]; then
 	while [[ ${vep} != "yes" ]] && [[ ${vep} != "no" ]] ; do
-		echo -e "\nWould you like to annotate with VEP?"
+		echo -e "\nWould you like to annotate with Ensembl Variant Effect Predictor?"
 		read -e -p "Type \"yes\" to annotate with VEP, \"no\" to skip, or q to quit, and press [RETURN]: " vep
 		if [[ ${vep} == "q" ]]; then exit; fi;
 	done
@@ -200,16 +221,8 @@ elif [ -z ${vep} ]; then
 		if [[ ${vepassembly} == "" ]]; then
 			vepassembly="${defaultvepassembly}"
 		fi
-		if [[ -z ${BCSQ} ]]; then
-			while [[ ${BCSQ} != "yes" ]] && [[ ${BCSQ} != "no" ]] ; do
-				echo -e "\nWould you like to use the haplotype aware consequence annotation BCSQ?"
-				read -e -p "Type \"yes\" to annotate with BCSQ, \"no\" to skip, or q to quit, and press [RETURN]: " BCSQ
-				if [[ ${BCSQ} == "q" ]]; then exit; fi;
-			done
-		fi
 	fi
 fi
-
 # make an array for the default sourcetags
 #oldIFS=$IFS
 IFS=","
@@ -919,13 +932,15 @@ if [ ! -f ${parameterfile} ]; then
 	echo "vepspecies=${vepspecies}" >> ${parameterfile}
 	echo "BCSQ=${BCSQ}" >> ${parameterfile}
 	echo "GFF3forBCSQ=${GFF3forBCSQ}" >> ${parameterfile}
+	echo "Xcludedsamples=${Xcludedsamples}" >> ${parameterfile}
 	echo "sourcetagarray=(${sourcetagarray[@]})" >> ${parameterfile}
 	echo "sourcefilearray=(${sourcefilearray[@]})" >> ${parameterfile}
 	echo "filetypearray=(${filetypearray[@]})" >> ${parameterfile}
 	echo "annotatearray=(${annotatearray[@]})" >> ${parameterfile}
 	for i in ${!header[@]}; do
 		if [ ! -z "${header[${i}]}" ] && [[ "${header[${i}]}" != "null" ]]; then
-			echo -e "${header[${i}]}" > ${PROJECT_PATH}/${sourcetag[${i}]}.hdr
+			mkdir -p ${PROJECT_PATH}/headers
+			echo -e "${header[${i}]}" > ${PROJECT_PATH}/headers/${sourcetag[${i}]}.hdr
 		fi
 	done
 fi
@@ -933,20 +948,23 @@ if ! mkdir -p ${PROJECT_PATH}/slurm; then
 	echo "Error creating output folder!"
 	exit 1
 fi
-
+launch=$PWD
 cd ${PROJECT_PATH}
 
 if [[ ${snpeff} == "yes" ]]; then
 	for CONTIG in ${CONTIGARRAY[@]}; do
-		if [ ! -f "${PROJECT_PATH}/${CONTIG}_snpeff.vcf.gz.done" ] && [ ! -f "${PROJECT_PATH}/${CONTIG}_ann.vcf.gz.done" ]; then
+		if [ ! -f "${PROJECT_PATH}/done/snpeff/${CONTIG}_SnpEff.vcf.gz.tbi.done" ] && [ ! -f "${PROJECT_PATH}/done/ann/${CONTIG}_ann.vcf.gz.tbi.done" ]; then
 			snpeffrun=incomplete
 #			echo -e "${CONTIG} SnpEff annotation incomplete"
 		fi
 	done
 
 	if [[ ${snpeffrun} == incomplete ]]; then
-# the setting of this variable captures the slurm job id ( and runs the batch script)
-		cmd="sbatch -J SnpEff_${PROJECT} ${mailme} --array 1-${contigarraynumber}%12 ${BASEDIR}/slurm_scripts/annoSnpEff.sl"
+		if ! mkdir -p ${PROJECT_PATH}/slurm/snpeff; then
+			echo "Error creating output folder!"
+			exit 1
+		fi
+cmd="sbatch -J SnpEff_${PROJECT} ${mailme} --array 1-${contigarraynumber}%12 ${BASEDIR}/slurm_scripts/annoSnpEff.sl"
 		snpeffjob=$(eval $cmd | awk '{print $4}')
 		echo "SnpEff_${PROJECT} job is ${snpeffjob}"
 	fi
@@ -954,7 +972,7 @@ fi
 
 if [[ ${vep} == "yes" ]]; then
 	for CONTIG in ${CONTIGARRAY[@]}; do
-		if [ ! -f "${PROJECT_PATH}/${CONTIG}_VEP.vcf.gz.done" ] && [ ! -f "${PROJECT_PATH}/${CONTIG}_BCSQ.vcf.gz.done" ] && [ ! -f "${PROJECT_PATH}/${CONTIG}_ann.vcf.gz.done" ]; then
+		if [ ! -f "${PROJECT_PATH}/done/vep/${CONTIG}_VEP.vcf.gz.tbi.done" ] && [ ! -f "${PROJECT_PATH}/done/ann/${CONTIG}_ann.vcf.gz.tbi.done" ]; then
 			veprun=incomplete
 		fi
 	done
@@ -966,7 +984,10 @@ if [[ ${vep} == "yes" ]]; then
 	fi
 
 	if [[ ${veprun} == incomplete ]]; then
-# the setting of this variable captures the slurm job id ( and runs the batch script)
+		if ! mkdir -p ${PROJECT_PATH}/slurm/vep; then
+			echo "Error creating output folder!"
+			exit 1
+		fi
 		cmd="sbatch -J VEP_${PROJECT} ${depend} ${mailme} --array 1-${contigarraynumber}%12 ${BASEDIR}/slurm_scripts/annoVEP.sl"
 		vepjob=$(eval $cmd | awk '{print $4}')
 		echo "VEP_${PROJECT} job is ${vepjob}"
@@ -974,7 +995,7 @@ if [[ ${vep} == "yes" ]]; then
 fi
 
 for CONTIG in ${CONTIGARRAY[@]}; do
-	if [ ! -f "${PROJECT_PATH}/${CONTIG}_ann.vcf.gz.done" ]; then
+	if [ ! -f "${PROJECT_PATH}/done/ann/${CONTIG}_ann.vcf.gz.tbi.done" ]; then
 		anno=incomplete
 #		echo -e "${CONTIG} annotation incomplete"
 	fi
@@ -987,7 +1008,10 @@ else
 fi
 
 if [[ ${anno} == incomplete ]]; then
-# the setting of this variable captures the slurm job id ( and runs the batch script)
+	if ! mkdir -p ${PROJECT_PATH}/slurm/ann; then
+		echo "Error creating output folder!"
+		exit 1
+	fi
 	cmd="sbatch -J AnnotateVCF_${PROJECT} ${depend} ${mailme} --array 1-${contigarraynumber}%12 ${BASEDIR}/slurm_scripts/annotateVCF.sl"
 	annodep=$(eval $cmd | awk '{print $4}')
 	echo "Annotate_${PROJECT} job is ${annodep}"
@@ -1001,12 +1025,76 @@ else
 	depend=""
 fi
 
-if [ ! -f "${PROJECT_PATH}/${PROJECT}_ann.vcf.gz.done" ]; then
+if [ ! -f "${PROJECT_PATH}/done/merge/${PROJECT}.done" ]; then
 	merge="incomplete"
 fi
 
 if [[ ${merge} == "incomplete" ]]; then
+	if ! mkdir -p ${PROJECT_PATH}/slurm/merge; then
+		echo "Error creating output folder!"
+		exit 1
+	fi
+
 	cmd="sbatch $depend -J Merge_${PROJECT} ${mailme} ${BASEDIR}/slurm_scripts/merge.sl"
 	mergedep=$(eval $cmd | awk '{print $4}')
 	echo "Merge_${PROJECT} job is ${mergedep}"
 fi
+
+
+###### Do the BCSQ annotatiom
+if [[ ${BCSQ} == "yes" ]]; then
+	if [ ! -f "${PROJECT_PATH}/done/bcsq/${PROJECT}_ann.vcf.gz.tbi.done" ]; then
+			bcsqrun=incomplete
+	fi
+	if [ ! -z ${mergedep} ]; then
+		depend="--dependency=afterok:${mergedep}"
+	else 
+		depend=""
+	fi
+
+	if [[ ${bcsqrun} == incomplete ]]; then
+		if ! mkdir -p ${PROJECT_PATH}/slurm/bcsq; then
+			echo "Error creating output folder!"
+			exit 1
+		fi
+		cmd="sbatch -J BCSQ_${PROJECT} ${depend} ${mailme} ${BASEDIR}/slurm_scripts/annoBCSQ.sl"
+		bcsqjob=$(eval $cmd | awk '{print $4}')
+		echo "BCSQ_${PROJECT} job is ${bcsqjob}"
+	fi
+fi
+
+##### Move most files to destination directory
+if [ ! -f "${PROJECT_PATH}/done/move/${PROJECT}.done" ]; then
+	move=incomplete
+fi
+if [[ ${move} == incomplete ]]; then
+	if [[ ${BCSQ} == "yes" ]]; then
+		if [ ! -z ${bcsqjob} ]; then
+			depend="--dependency=afterok:${bcsqjob}"
+		else 
+			depend=""
+		fi
+	else
+		if [ ! -z ${mergedep} ]; then
+			depend="--dependency=afterok:${mergedep}"
+		else 
+			depend=""
+		fi
+	fi
+	if ! mkdir -p ${PROJECT_PATH}/slurm/move; then
+		echo "Error creating output folder!"
+		exit 1
+	fi
+	cmd="sbatch -J Move_${PROJECT} ${depend} ${mailme} ${BASEDIR}/slurm_scripts/move.sl"
+	movejob=$(eval $cmd | awk '{print $4}')
+	echo "Move_${PROJECT} job is ${movejob}"
+fi
+
+
+#####clean up 
+#this takes us back to the original launch directory so that the final slurm out file will be written there
+cd ${launch}
+cmd="sbatch -J Cleanup_${PROJECT} --dependency=afterok:${movejob} ${mailme} ${BASEDIR}/slurm_scripts/cleanup.sl"
+cleanupjob=$(eval $cmd | awk '{print $4}')
+echo "Cleanup_${PROJECT} job is ${cleanupjob}"
+
