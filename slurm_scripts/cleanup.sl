@@ -48,7 +48,7 @@ if [ -d ${PROJECT_PATH}/done ]; then
 	eval $cmd || exit 1
 fi
 if [ -d ${PROJECT_PATH} ]; then
-	cmd="srun tar --exclude-vcs -zcf ${DEST}/${PROJECT}.tar.gz ${PROJECT_PATH}"
+	cmd="srun tar --exclude-vcs -zcf ${dest}/${PROJECT}.tar.gz ${PROJECT_PATH}"
 	echo $cmd
 	eval $cmd || exit 1
 fi

@@ -1,8 +1,8 @@
 #!/bin/bash
 #annoBCSQ.sl 
 #SBATCH --job-name	Move
-#SBATCH --time		1-00:00:00
-#SBATCH --mem		1G
+#SBATCH --time		1:00:00
+#SBATCH --mem		24M
 #SBATCH --mail-type	REQUEUE,FAIL,END
 #SBATCH --cpus-per-task	1
 #SBATCH --error		slurm/move/move-%j.out
@@ -47,40 +47,41 @@ if [ ! -f ${PROJECT_PATH}/done/move/${PROJECT}_annotations.list.done ]; then
 else
 	echo "INFO: Output for ${PROJECT_PATH}/move/${PROJECT}_annotations.list already available"
 fi
-if [ -z ${DEST} ]; then
-	count="1"
+set +u
+if [ -z "${dest}" ]; then
+	count=1
 	while [ -d $(dirname ${unannotatedvcf})/${PROJECT}_Annotated_${count} ]; do
 		count=$(($count+1))
 	done
-	DEST=$(dirname ${unannotatedvcf})/${PROJECT}_Annotated_${count}
-	if ! mkdir -p ${DEST}; then
+	dest=$(dirname ${unannotatedvcf})/${PROJECT}_Annotated_${count}
+	if ! mkdir -p ${dest}; then
 		echo "Error creating destination folder!"
 		exit 1
 	fi
-	echo "DEST=${DEST}" >> ${parameterfile}
+	echo "dest=${dest}" >> ${parameterfile}
 fi
-echo -e "DEST is ${DEST}"
-
+echo -e "dest is ${dest}"
+set -u
 if [ ! -f ${PROJECT_PATH}/done/move/${PROJECT}_ann.vcf.gz.move.done ]; then
-	cmd="srun mv ${input} ${DEST}"
+	cmd="srun mv ${input} ${dest}"
 	echo $cmd
 	eval $cmd || exit 1$?
 	touch ${PROJECT_PATH}/done/move/${PROJECT}_ann.vcf.gz.move.done
 fi
 if [ ! -f ${PROJECT_PATH}/done/move/${PROJECT}_ann.vcf.gz.tbi.move.done ]; then
-	cmd="srun mv ${input}.tbi ${DEST}"
+	cmd="srun mv ${input}.tbi ${dest}"
 	echo $cmd
 	eval $cmd || exit 1$?
 	touch ${PROJECT_PATH}/done/move/${PROJECT}_ann.vcf.gz.tbi.move.done
 fi
 if [ ! -f ${PROJECT_PATH}/done/move/${PROJECT}_ID.list.move.done ]; then
-	cmd="srun mv ${PROJECT_PATH}/move/${PROJECT}_ID.list ${DEST}"
+	cmd="srun mv ${PROJECT_PATH}/move/${PROJECT}_ID.list ${dest}"
 	echo $cmd
 	eval $cmd || exit 1$?
 	touch ${PROJECT_PATH}/done/move/${PROJECT}_ID.list.move.done
 fi
 if [ ! -f ${PROJECT_PATH}/done/move/${PROJECT}_annotations.list.move.done ]; then
-	cmd="srun mv ${PROJECT_PATH}/move/${PROJECT}_annotations.list ${DEST}"
+	cmd="srun mv ${PROJECT_PATH}/move/${PROJECT}_annotations.list ${dest}"
 	echo $cmd
 	eval $cmd || exit 1$?
 	touch ${PROJECT_PATH}/done/move/${PROJECT}_annotations.list.move.done

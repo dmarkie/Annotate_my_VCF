@@ -7,8 +7,9 @@ defaultsnpeff_format="ANN"
 vep="" #change this to vep="yes" if you want vep by default when using a command with arguments to run annotation
 defaultvepspecies="homo_sapiens"
 defaultvepassembly="GRCh37"
-defaultBCSQ="" #change this to defaultBCSQ="yes" if you want BCSQ by default when using a command with arguments to run annotation
+BCSQ="" #change this to defaultBCSQ="yes" if you want BCSQ by default when using a command with arguments to run annotation
 GFF3forBCSQ="/resource/bundles/ClinGeneDisease/Homo_sapiens.GRCh37.87.gff3.gz"
+#Xcludedsamples=unknown  #none or a comma delimted list of sample names - this is not implemented at present
 ########### SPECIFY THE SOURCE FILES TO USE BY DEFAULT (COMMA SEPARATED SOURCE "TAGS") ############
 #default sourcetags to use for annotation 
 default_sourcetags=clinVar_nonMNP,clinVar_MNP,DecipherG2P,DVAR,OMIM,gnomADgenomes,gnomADexomes,CCR,MTR,PrimateAI,ExAC_GC,RVIS,MPC,Spidex,GERP2,CDTS,REVEL,fathmmMKL,dbNSFP,CADD,DANN,phastCons,phyloP,LINSIGHT,ClinGeneDisease,HiC_CP,HiC_GZ
@@ -138,7 +139,7 @@ REFD=${REF}.dict
 ########### SPECIFY THE CONTIGS TO BREAK THE JOBS INTO  ############
 # Here's a bit of code that breaks the reference sequence up into 10Mb segments (380 contigs for b37)- or you can quickly change to any size by altering the length_Mbp variable
 
-length_Mbp=10
+length_Mbp=100
 
 length_bp=$((${length_Mbp}*1000000))
 

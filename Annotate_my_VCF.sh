@@ -1090,11 +1090,15 @@ if [[ ${move} == incomplete ]]; then
 	echo "Move_${PROJECT} job is ${movejob}"
 fi
 
-
 #####clean up 
 #this takes us back to the original launch directory so that the final slurm out file will be written there
 cd ${launch}
-cmd="sbatch -J Cleanup_${PROJECT} --dependency=afterok:${movejob} ${mailme} ${BASEDIR}/slurm_scripts/cleanup.sl"
+if [ ! -z ${movejob} ] || [[ ${move} == incomplete ]]; then
+	depend="--dependency=afterok:${movejob}"
+else 
+	depend=""
+fi
+cmd="sbatch -J Cleanup_${PROJECT} ${depend} ${mailme} ${BASEDIR}/slurm_scripts/cleanup.sl"
 cleanupjob=$(eval $cmd | awk '{print $4}')
 echo "Cleanup_${PROJECT} job is ${cleanupjob}"
 
