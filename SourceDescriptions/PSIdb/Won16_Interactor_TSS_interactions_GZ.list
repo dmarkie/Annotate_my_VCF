@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+5	interactor	.	String	The searched interacting locus in a 10kb interval in the format chr_start_end_FDR
+9	TSS	.	String	The interacting TSS in a 10kb interval in the format chr_start_end_ENSGID

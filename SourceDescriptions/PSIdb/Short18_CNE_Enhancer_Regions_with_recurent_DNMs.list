@@ -1,0 +1,6 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	region_id	.	String	The coordinates of the region  
+5	annotation	.	String	The type of the region 
+6	dnm	.	String	The de novo mutations within the region separated by |
+7	p_val	.	Float	The P value of enrichment of DNMs with the region

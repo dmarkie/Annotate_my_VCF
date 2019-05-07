@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	HGE	.	String	The coordinates of the human gained enhancer 
+5	Overlap_element	.	String	Type of element(s) overlapped with the human gained enhancer 

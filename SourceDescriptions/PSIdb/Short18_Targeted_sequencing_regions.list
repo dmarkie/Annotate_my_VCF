@@ -1,0 +1,3 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	median_coverage	.	Float	The median of sequence coverage of Short18 sequenced regions which are not necessarily relevant for brain related studies, particularly those for heart enhancers. Can be ignored.

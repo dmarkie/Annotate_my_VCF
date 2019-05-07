@@ -1,0 +1,5 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	TU	.	String	The coordinates of the transcriptional unit
+6	Accession	.	String	The accession number of the transcriptional unit
+7	type	.	String	The type of transcript unit

@@ -1,0 +1,6 @@
+##columns	#Chr	peakstart	peakend
+##column tag	Number	Type	Description
+5	log2FoldChange	.	Float	The fold change of differential accessibility in the log2 scale
+9	padj	.	Float	The FDR adjusted P value
+11	ENSGIDatTSS	.	String	The Ensembl ID of the gene with differential accessibility between GZ and CP
+12	HGNCatTSS	.	String	The HGNC symbol of the gene with differential accessibility between GZ and CP

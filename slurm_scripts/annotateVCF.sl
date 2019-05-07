@@ -147,7 +147,7 @@ if [ -f ${PROJECT_PATH}/done/ann/${CONTIG}_ann.vcf.gz.tbi.done ]; then
 	echo -e "Annotation index already complete."
 	exit 0
 else
-	scontrol update jobid=${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID} jobname=AnnIndex_${sourcetagarray[${i}]}_${PROJECT}_${CONTIG}
+	scontrol update jobid=${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID} jobname=AnnIndex_${PROJECT}_${CONTIG}
 	module purge
 	module load BCFtools
 	cmd2="srun $(which bcftools) index -t ${PROJECT_PATH}/ann/${CONTIG}_ann.vcf.gz \
@@ -158,4 +158,3 @@ fi
 
 
 exit 0
-

@@ -1,141 +1,152 @@
 ########### SNPEFF ############
-snpeff="" #change this to snpeff="yes" if you want snpeff by default when using a command with arguments to run annotation
+snpeff="no" #change this to snpeff="yes" if you want snpeff by default when using a command with arguments to run annotation
 defaultsnpeffdataversion="GRCh37.75"
 defaultsnpeff_format="ANN"
 
 ########### VEP ############
-vep="" #change this to vep="yes" if you want vep by default when using a command with arguments to run annotation
+vep="no" #change this to vep="yes" if you want vep by default when using a command with arguments to run annotation
 defaultvepspecies="homo_sapiens"
 defaultvepassembly="GRCh37"
-BCSQ="" #change this to defaultBCSQ="yes" if you want BCSQ by default when using a command with arguments to run annotation
+BCSQ="no" #change this to defaultBCSQ="yes" if you want BCSQ by default when using a command with arguments to run annotation
 GFF3forBCSQ="/resource/bundles/ClinGeneDisease/Homo_sapiens.GRCh37.87.gff3.gz"
 #Xcludedsamples=unknown  #none or a comma delimted list of sample names - this is not implemented at present
 ########### SPECIFY THE SOURCE FILES TO USE BY DEFAULT (COMMA SEPARATED SOURCE "TAGS") ############
 #default sourcetags to use for annotation 
-default_sourcetags=gnomADLOFmetricsbyTranscript,gnomADLOFmetricsbyGene,clinVar_nonMNP,clinVar_MNP,DecipherG2P,DVAR,OMIM,gnomADgenomes,gnomADexomes,CCR,MTR,PrimateAI,ExAC_GC,RVIS,MPC,Spidex,GERP2,CDTS,REVEL,fathmmMKL,dbNSFP,CADD,DANN,phastCons,phyloP,LINSIGHT,ClinGeneDisease,HiC_CP,HiC_GZ
+default_sourcetags=Won16_HGE_GZ,Won16_HGE_CP,Reilly15_HGE_cortex,Prescott15_hsCRE,Vermunt16_psCRE,Short18_CNEenhancer,Doan16_HARs,Kronenberg18_hsINS,Tay09_psTUs,Gittelman15_haDHS,Parikshak16_ps_lncRNAs,Ji16_essentialGene,Emera16_ancientEN,Won16_TSS_GZ,Won16_TSS_CP,Adiconis18_TSS,delaTorre_Ubieta18_DRE,delaTorre_Ubieta18_Promoter,delaTorre_Ubieta18_daPeak,Prescott15_CNCC_enhancer,Parikshak16_lncRNA_cortex,Parikshak16_lncRNA_cerebellum
+
+#unused tags: Won16_interactor_HGE_GZ,Won16_interactor_HGE_GZ,Won16_interactor_TSS_GZ,Won16_interactor_TSS_CP,Short18_targetedSequencingReion,delaTorre_Ubieta18_deGene,delaTorre_Ubieta18_deTF,delaTorre_Ubieta18_geneByHGE_GZ,delaTorre_Ubieta18_geneByHGE_CP,Parikshak16_altSplice_cortex,Parikshak16_altSplice_cerebellum
 
 ########### DETAILS FOR BED FILES ############
 # each default bed file to be used must have a "sourcetag" set to the full path of the source file
 # and a comma separated list of the default tags to use (defined by defaultannotations_"sourcetag"
 # and a file that describes the columns, tags, number, type and descriptions for annotations
 
-CCR=/resource/bundles/CCR/ccrs.combined.v2.20180420.bed.gz
-defaultannotations_CCR="percentile"
-description_CCR=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/CCR.list
+#CCR=/resource/bundles/CCR/ccrs.combined.v2.20180420.bed.gz
+#defaultannotations_CCR="percentile"
+#description_CCR=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/CCR.list
 
-
-GERP2=/resource/bundles/GERP/All_hg19_RS.bed.gz
-defaultannotations_GERP2="RS"
-description_GERP2=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/GERP2.list
-
-CDTS=/resource/bundles/CDTS/CDTS_diff_perc_coordsorted_gnomAD_N15496_hg19.bed.gz
-defaultannotations_CDTS="score,percentile"
-description_CDTS=${BASEDIR}/SourceDescriptions/CDTS.list
-
-LINSIGHT=/resource/bundles/LINSIGHT/LINSIGHT.bed.gz
-defaultannotations_LINSIGHT="score"
-description_LINSIGHT=${BASEDIR}/SourceDescriptions/LINSIGHT.list
-
-phastCons=/resource/bundles/phastCons/hg19.100way.phastCons.bed.gz
-defaultannotations_phastCons="score"
-description_phastCons="${BASEDIR}/SourceDescriptions/hg19.100way.phastCons.list"
-
-phyloP=/resource/bundles/phyloP/hg19.100way.phyloP.bed.gz
-defaultannotations_phyloP="score"
-description_phyloP=${BASEDIR}/SourceDescriptions/hg19.100way.phyloP.list
+#phastCons=/resource/bundles/phastCons/hg19.100way.phastCons.bed.gz
+#defaultannotations_phastCons="score"
+#description_phastCons="${BASEDIR}/SourceDescriptions/hg19.100way.phastCons.list"
 
 ########### DETAILS FOR TAB-DELIMITED FILES WITH A HEADER LINE ############
-DecipherG2P=/resource/bundles/Decipher/DDG2P.txt.gz
-defaultannotations_DecipherG2P="gene_symbol,disease_name,DDD_category,allelic_requirement,mutation_consequence"
-description_DecipherG2P=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/DecipherG2P.list
+# assuming file path to store data files and description files
+# 	/resource/bundles/PSIdb/	#place to store data files
+#	/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/
+Won16_HGE_GZ=/resource/bundles/PSIdb/Won16_Human_gained_enhancers_interaction_profile_GZ.txt.gz
+defaultannotations_Won16_HGE_GZ="human_gained_enhancer,interactor"
+description_Won16_HGE_GZ=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_Human_gained_enhancers_interaction_profile_GZ.list
 
-DVAR=/resource/bundles/DVAR/hg19/hg19_DVAR.score.gz
-defaultannotations_DVAR="score"
-description_DVAR=${BASEDIR}/SourceDescriptions/DVAR.list
+Won16_HGE_CP=/resource/bundles/PSIdb/Won16_Human_gained_enhancers_interaction_profile_CP.txt.gz
+defaultannotations_Won16_HGE_CP="human_gained_enhancer,interactor"
+description_Won16_HGE_CP=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_Human_gained_enhancers_interaction_profile_CP.list
 
-OMIM=/resource/bundles/OMIM/OMIM_Phenotype_Annotation2.txt.gz
-defaultannotations_OMIM="Gene_Number,Approved_Symbol,Phenotype,Phenotype_Number,Phenotype_Mapping_Method,Inheritance"
-description_OMIM=${BASEDIR}/SourceDescriptions/OMIM.list
+Reilly15_HGE_cortex=/resource/bundles/PSIdb/Reilly15_humanGainEnhancers_HARs_Vista_cortex.txt.gz
+defaultannotations_Reilly15_HGE_cortex="HGE,Overlap_element"
+description_Reilly15_HGE_cortex=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Reilly15_humanGainEnhancers_HARs_Vista_cortex.list
 
-MTR=/resource/bundles/MTR/mtrflatfile_1.0.txt.gz
-defaultannotations_MTR="feature,protein_position,score,FDR,centile"
-description_MTR=${BASEDIR}/SourceDescriptions/mtrflatfile_1.0.list
+Prescott15_hsCRE=/resource/bundles/PSIdb/Prescott15_top1000_human_biased_CREnhancer.txt.gz
+defaultannotations_Prescott15_hsCRE="P_adj,log2FoldChange,promoter_signature"
+description_Prescott15_hsCRE=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Prescott15_top1000_human_biased_CREnhancer.list
 
-PrimateAI=/resource/bundles/PrimateAI/PrimateAI_scores_v0.2a.tsv.gz
-defaultannotations_PrimateAI="refAA,altAA,UCSC_gene,score"
-description_PrimateAI=${BASEDIR}/SourceDescriptions/PrimateAI.tsv.list
+Vermunt16_psCRE=/resource/bundles/PSIdb/Vermunt16_primate_CREs_brain.txt.gz
+defaultannotations_Vermunt16_psCRE="CRE,type,humanSpecific"
+description_Vermunt16_psCRE=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Vermunt16_primate_CREs_brain.list
 
-HiC_CP=/resource/bundles/Hi-C/Won_2016_HiC_CP_TSS.txt.gz
-defaultannotations_HiC_CP="ENSGID,FDR,Gene"
-description_HiC_CP=${BASEDIR}/SourceDescriptions/Won_2016_HiC_CP_TSS.list
+Short18_CNEenhancer=/resource/bundles/PSIdb/Short18_CNE_Enhancer_Regions_with_recurent_DNMs.txt.gz
+defaultannotations_Short18_CNEenhancer="region_id,annotation,dnm,p_val"
+description_Short18_CNEenhancer=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Short18_CNE_Enhancer_Regions_with_recurent_DNMs.list
 
-HiC_GZ=/resource/bundles/Hi-C/Won_2016_HiC_GZ_TSS.txt.gz
-defaultannotations_HiC_GZ="ENSGID,FDR,Gene"
-description_HiC_GZ=${BASEDIR}/SourceDescriptions/Won_2016_HiC_GZ_TSS.list
+Doan16_HARs=/resource/bundles/PSIdb/Doan16_HARs.txt.gz
+defaultannotations_Doan16_HARs="refGene,Interacting_genes"
+description_Doan16_HARs=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Doan16_HARs.list
 
-RVIS=/resource/bundles/RVIS/RVIS_ExAC_v2.txt.gz
-defaultannotations_RVIS="Gene,score,percentscore"
-description_RVIS=${BASEDIR}/SourceDescriptions/RVIS.list
+Kronenberg18_hsINS=/resource/bundles/PSIdb/Kronenberg18_fixed_human_specific_insertion.txt.gz
+defaultannotations_Kronenberg18_hsINS="SVLEN,CEXON,EXONDIST,HUMAN_AND_CHIMP_FST"
+description_Kronenberg18_hsINS=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Kronenberg18_fixed_human_specific_insertion.list
 
-dbNSFP=/resource/bundles/dbNSFP/dbNSFP3.5a_hg19mod.txt.gz
-defaultannotations_dbNSFP="Ensembl_transcriptid,SIFT_score,SIFT_converted_rankscore,SIFT_pred,Uniprot_acc_Polyphen2,Polyphen2_HDIV_pred,Polyphen2_HDIV_score,Polyphen2_HDIV_rankscore,Polyphen2_HVAR_pred,Polyphen2_HVAR_score,Polyphen2_HVAR_rankscore,LRT_pred,MutationTaster_pred,MutationTaster_converted_rankscore,MutationAssessor_rankscore,MetaSVM_pred,MetaSVM_rankscore,MetaLR_pred,MetaLR_rankscore,VEST3_score,VEST3_rankscore,PROVEAN_pred,PROVEAN_converted_rankscore,GERP2_NR,GERP2_RS,GERP2_RS_rankscore,Interpro_domain,GTEx_V6p_tissue,GTEx_V6p_gene"
-description_dbNSFP=${BASEDIR}/SourceDescriptions/dbNSFP3.5a_hg19.list
+Tay09_psTUs=/resource/bundles/PSIdb/Tay09_Primate_Specific_TUs.txt.gz
+defaultannotations_Tay09_psTUs="TU,Accession,type"
+description_Tay09_psTUs=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Tay09_Primate_Specific_TUs.list
 
-ExAC_GC=/resource/bundles/ExACGeneConstraint/Lek2016.txt.gz
-defaultannotations_ExAC_GC="Gene,Transcript,pLI,pRec,pNull,mis_z,syn_z,lof_z"
-description_ExAC_GC=${BASEDIR}/SourceDescriptions/ExACGeneConstraint.list
+Gittelman15_haDHS=/resource/bundles/PSIdb/Gittelman15_haDHS.txt.gz
+defaultannotations_Gittelman15_haDHS="haDHS"
+description_Gittelman15_haDHS=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Gittelman15_haDHS.list
 
-ClinGeneDisease=/resource/bundles/ClinGeneDisease/gene_condition.tab.gz
-defaultannotations_ClinGeneDisease="GeneSymbol,Disease,DiseaseMIM"
-description_ClinGeneDisease=${BASEDIR}/SourceDescriptions/ClinGeneDisease.list
+Parikshak16_ps_lncRNAs=/resource/bundles/PSIdb/Parikshak16_autism_differentially_expressed_lncRNAs_Cortex.txt.gz
+defaultannotations_Parikshak16_ps_lncRNAs="ENSEMBL_ID,log2FC_ASD_vs_CTL,Sequence_age"
+description_Parikshak16_ps_lncRNAs=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Parikshak16_autism_differentially_expressed_lncRNAs_Cortex.list
 
-MPC=/resource/bundles/MPC/MPC_Scores.txt.gz
-defaultannotations_MPC="mis_badness,score"
-description_MPC="${BASEDIR}/SourceDescriptions/MPC_scores.txt.list"
+Ji16_essentialGene=/resource/bundles/PSIdb/Ji16_essential_gene.txt.gz
+defaultannotations_Ji16_essentialGene="Gene_symbol"
+description_Ji16_essentialGene=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Ji16_essential_gene.list
 
-DANN=/resource/bundles/DANN/DANN_whole_genome_SNVs.tsv.gz
-defaultannotations_DANN="score"
-description_DANN=${BASEDIR}/SourceDescriptions/DANN_whole_genome.list
+Emera16_ancientEN=/resource/bundles/PSIdb/Emera16_human_enhancer_sharing.txt.gz
+defaultannotations_Emera16_ancientEN="Human_enhancer_shared,Phylogenetic_age"
+description_Emera16_ancientEN=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Emera16_human_enhancer_sharing.list
 
-CADD=/resource/bundles/CADD1.3/whole_genome_SNVs.tsv.gz
-defaultannotations_CADD="Rawscore,PHREDscore"
-description_CADD=${BASEDIR}/SourceDescriptions/CADD.list
+Won16_TSS_GZ=/resource/bundles/PSIdb/Won16_TSS_interaction_profile_GZ.txt.gz
+defaultannotations_Won16_TSS_GZ="TSS,interactor"
+description_Won16_TSS_GZ=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_TSS_interaction_profile_GZ.list
 
-fathmmMKL=/resource/bundles/fathmm-MKL/fathmm-MKL_Current.tab.gz
-defaultannotations_fathmmMKL="NonCoding_score,NonCoding_Groups,Coding_score,Coding_Groups"
-description_fathmmMKL=${BASEDIR}/SourceDescriptions/fathmmMKL.list
+Won16_TSS_CP=/resource/bundles/PSIdb/Won16_TSS_interaction_profile_CP.txt.gz
+defaultannotations_Won16_TSS_CP="TSS,interactor"
+description_Won16_TSS_CP=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_TSS_interaction_profile_CP.list
 
-Spidex=/resource/bundles/spidex/spidex.tsv.gz
-defaultannotations_Spidex="score,zscore"
-description_Spidex=${BASEDIR}/SourceDescriptions/spidex.list
+Adiconis18_TSS=/resource/bundles/PSIdb/Adiconis18_Differential_TSS_usage_brain_related_samples.txt.gz
+defaultannotations_Adiconis18_TSS="Gene,Padj,Comparison"
+description_Adiconis18_TSS=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Adiconis18_Differential_TSS_usage_brain_related_samples.list
 
-REVEL=/resource/bundles/REVEL/REVEL.tsv.gz
-defaultannotations_REVEL="score"
-description_REVEL=${BASEDIR}/SourceDescriptions/REVEL.list
+delaTorre_Ubieta18_DRE=/resource/bundles/PSIdb/delaTorre_Ubieta18_DRE_promoter_interaction_consensus.txt.gz
+defaultannotations_delaTorre_Ubieta18_DRE="hgnc_symbol,interactingPromoter"
+description_delaTorre_Ubieta18_DRE=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/delaTorre_Ubieta18_DRE_promoter_interaction_consensus.list
 
-gnomADLOFmetricsbyGene=/resource/bundles/REgnomAD/2.1/Genomes/gnomad.v2.1.1.lof_metrics.by_gene_reorder_sort.txt.gz
-defaultannotations_gnomADLOFmetricsbyGene="gene,syn_z,mis_z,lof_z,oe_lof,pLI,obs_hom_lof"
-description_gnomADLOFmetricsbyGene=${BASEDIR}/SourceDescriptions/gnomADmetricsbyGene.list
+delaTorre_Ubieta18_Promoter=/resource/bundles/PSIdb/delaTorre_Ubieta18_Promoter_DRE_interaction_consensus.txt.gz
+defaultannotations_delaTorre_Ubieta18_Promoter="hgnc_symbol,DREenhancer"
+description_delaTorre_Ubieta18_Promoter=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/delaTorre_Ubieta18_Promoter_DRE_interaction_consensus.list
 
-gnomADLOFmetricsbyTranscript=/resource/bundles/REgnomAD/2.1/Genomes/gnomad.v2.1.1.lof_metrics.by_transcript_reorder_sort.txt.gz
-defaultannotations_gnomADLOFmetricsbyTranscript="gene,transcript,syn_z,mis_z,lof_z,oe_lof,pLI,obs_hom_lof"
-description_gnomADLOFmetricsbyTranscript=${BASEDIR}/SourceDescriptions/gnomADmetricsbyTranscript.list
+delaTorre_Ubieta18_daPeak=/resource/bundles/PSIdb/delaTorre_Ubieta18_genomewide_differential_access_peaks.txt.gz
+defaultannotations_delaTorre_Ubieta18_daPeak="log2FoldChange,padj,ENSGIDatTSS,HGNCatTSS"
+description_delaTorre_Ubieta18_daPeak=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/delaTorre_Ubieta18_genomewide_differential_access_peaks.list
+
+Prescott15_CNCC_enhancer=/resource/bundles/PSIdb/Prescott15_5000_active_CNCC_enhancer.txt.gz
+defaultannotations_Prescott15_CNCC_enhancer="CNCC_enhancer"
+description_Prescott15_CNCC_enhancer=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Prescott15_5000_active_CNCC_enhancer.list
+
+Parikshak16_lncRNA_cortex=/resource/bundles/PSIdb/Parikshak16_autism_gene_lncRNA_expression_Cortex.txt.gz
+defaultannotations_Parikshak16_lncRNA_cortex="ENSEMBL_ID,HGNC_Symbol,log2FC_ASD_vs_CTL,FDR_adjusted_P_ASD_vs_CTL"
+description_Parikshak16_lncRNA_cortex=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Parikshak16_autism_gene_lncRNA_expression_Cortex.list
+
+Parikshak16_lncRNA_cerebellum=/resource/bundles/PSIdb/Parikshak16_autism_gene_lncRNA_expression_Cerebellum.txt.gz
+defaultannotations_Parikshak16_lncRNA_cerebellum="ENSEMBL_ID,HGNC_Symbol,log2FC_ASD_vs_CTL,FDR_adjusted_P_ASD_vs_CTL"
+description_Parikshak16_lncRNA_cerebellum=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Parikshak16_autism_gene_lncRNA_expression_Cerebellum.list
+
+Won16_interactor_HGE_GZ=/resource/bundles/PSIdb/Won16_Interactor_human_gained_enhancer_interactions_GZ.txt.gz
+defaultannotations_Won16_interactor_HGE_GZ="interactor,human_gained_enhancer"
+description_Won16_interactor_HGE_GZ=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_Interactor_human_gained_enhancer_interactions_GZ.list
+
+Won16_interactor_HGE_CP=/resource/bundles/PSIdb/Won16_Interactor_human_gained_enhancer_interactions_CP.txt.gz
+defaultannotations_Won16_interactor_HGE_CP="interactor,human_gained_enhancer"
+description_Won16_interactor_HGE_CP=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_Interactor_human_gained_enhancer_interactions_CP.list
+
+Won16_interactor_TSS_GZ=/resource/bundles/PSIdb/Won16_Interactor_TSS_interactions_GZ.txt.gz
+defaultannotations_Won16_interactor_TSS_GZ="interactor,TSS"
+description_Won16_interactor_TSS_GZ=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_Interactor_TSS_interactions_GZ.list
+
+Won16_interactor_TSS_CP=/resource/bundles/PSIdb/Won16_Interactor_TSS_interactions_CP.txt.gz
+defaultannotations_Won16_interactor_TSS_CP="interactor,TSS"
+description_Won16_interactor_TSS_CP=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/PSIdb/Won16_Interactor_TSS_interactions_CP.list
 
 ########### DETAILS FOR VCF FILES ############
-gnomADgenomes=/resource/bundles/REgnomAD/2.1/Genomes/gnomad.genomes.r2.1.sites.vcf.gz
-defaultannotations_gnomADgenomes="AF,AF_afr,AF_amr,AF_asj,AF_eas,AF_fin,AF_nfe,AF_oth,AF_popmax,AC,nhomalt" 
+#gnomADgenomes=/resource/bundles/REgnomAD/2.1/Genomes/gnomad.genomes.r2.1.sites.vcf.gz
+#defaultannotations_gnomADgenomes="AF,AF_afr,AF_amr,AF_asj,AF_eas,AF_fin,AF_nfe,AF_oth,AF_popmax,AC,nhomalt" 
 
-gnomADexomes=/resource/bundles/REgnomAD/2.1/Exomes/gnomad.exomes.r2.1.sites.vcf.gz
-defaultannotations_gnomADexomes="AF,AF_afr,AF_amr,AF_asj,AF_eas,AF_fin,AF_nfe,AF_oth,AF_popmax,AC,nhomalt"
+#clinVar_nonMNP=/resource/bundles/ClinVar/GRCh37/clinvar_20181217_nonMNP.vcf.gz
+#defaultannotations_clinVar_nonMNP="ALLELEID,CLNHGVS,CLNSIG,CLNDN,CLNDISDB,GENEINFO,VariantType"
 
-clinVar_nonMNP=/resource/bundles/ClinVar/GRCh37/clinvar_20181217_nonMNP.vcf.gz
-defaultannotations_clinVar_nonMNP="ALLELEID,CLNHGVS,CLNSIG,CLNDN,CLNDISDB,GENEINFO,VariantType"
+#clinVar_MNP=/resource/bundles/ClinVar/GRCh37/clinvar_20181217_MNP.vcf.gz
+#defaultannotations_clinVar_MNP="ALLELEID,CLNHGVS,CLNSIG,CLNDN,CLNDISDB,GENEINFO,VariantType"
 
-clinVar_MNP=/resource/bundles/ClinVar/GRCh37/clinvar_20181217_MNP.vcf.gz
-defaultannotations_clinVar_MNP="ALLELEID,CLNHGVS,CLNSIG,CLNDN,CLNDISDB,GENEINFO,VariantType"
-
-ExAC=/resource/bundles/ExAC/ExAC.r0.3.1.sites.vep.vcf.gz
-defaultannotations_ExAC=""
 
 ########### SPECIFY THE REFERENCE FILE ############
 REF="/resource/bundles/broad_bundle_b37_v2.5/human_g1k_v37"
@@ -208,3 +219,4 @@ CONTIGARRAY=($(echo ${contigstring} | tr ',' ' '))
 #		CONTIGSTRING=${CONTIGSTRING},${CONTIG}
 #	fi
 #done
+

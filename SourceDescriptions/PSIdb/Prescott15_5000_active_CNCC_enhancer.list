@@ -1,0 +1,3 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	CNCC_enhancer	.	String	The flag of active CNCC enhancers for annotation purpose.

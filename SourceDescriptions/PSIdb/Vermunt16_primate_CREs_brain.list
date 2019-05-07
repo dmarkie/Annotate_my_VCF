@@ -1,0 +1,5 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	CRE	.	String	The full coordinates of the cis regulatory elment
+7	type	.	String	The type of cis regulatory elment
+8	humanSpecific	.	String	Flag of human specificity

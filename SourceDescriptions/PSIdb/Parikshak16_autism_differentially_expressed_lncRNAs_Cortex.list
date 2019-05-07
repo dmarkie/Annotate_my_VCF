@@ -1,0 +1,6 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	ENSEMBL_ID	.	String	The Ensembl ID of the gene differentially expressed in cortex
+6	log2FC_ASD_vs_CTL	.	Float	The fold change of differential expression between autism patients and controls, in the log2 scale
+8	Sequence_age	.	String	The phylogenic age of the lncRNA. Here sequence age, minimum transcript age, and maximum transcript age quoted from Necsulea et al The evolution of lncRNA repertoires and expression patterns in tetrapods. Nature 505, 635–640, 2014
+7	Notes	.	String	Futher information about the lncRNA

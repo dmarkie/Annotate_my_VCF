@@ -1,0 +1,6 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	SVLEN	.	Integer	Lenth of the insertion 
+5	CEXON	.	String	Gene symbol of the closest exon 
+6	EXONDIST	.	Float	Distance to the closest exon 
+12	HUMAN_AND_CHIMP_FST	.	Float	The Fst value between human and chimpanzee 

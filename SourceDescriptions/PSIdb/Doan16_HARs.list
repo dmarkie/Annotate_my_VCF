@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+5	refGene	.	String	Gene(s) mapped (or adjacent) to the HAR 
+8	Interacting_genes	.	String	Genes interacting with the HAR 

@@ -1,0 +1,3 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	haDHS	.	String	The coordinates of the haDHS (DNase I hypersensitive sites that are conserved in nonhuman primates but accelerated in the human lineage)

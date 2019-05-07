@@ -1,0 +1,5 @@
+##columns	#chr	Start	End
+##column tag	Number	Type	Description
+4	Gene	.	String	The HGNC symbol of the gene with differential TSS usage
+5	Padj	.	Float	The Bonferroni adjusted P value of differential usage of the TSS derived from Fishers exact test
+6	Comparison	.	String	The tissues used to compare TSS usage

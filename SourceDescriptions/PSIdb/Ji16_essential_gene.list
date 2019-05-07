@@ -1,0 +1,3 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description
+4	Gene_symbol	.	String	The symbol of the essential gene 
