@@ -1182,7 +1182,7 @@ if [[ ${vep} == "yes" ]]; then
 	fi
 fi
 
-if [ "${sourcetagarray[@]}" == "" ]; then
+if [ "${#sourcetagarray[@]}" -ne 0 ]; then
 	mkdir -p ${PROJECT_PATH}/slurm/ann
 	annArray=""
 	for i in $(seq 1 ${#CONTIGARRAY[@]}); do
@@ -1192,7 +1192,7 @@ if [ "${sourcetagarray[@]}" == "" ]; then
   	  fi
 	done
 	if [ "$annArray" != "" ]; then
-		annjob=$(sbatch -J AnnotateVCF_${PROJECT} $(depCheck $snpeffjob $vepjob) ${mailme} --array 1-${contigarraynumber}%12 ${BASEDIR}/slurm_scripts/annotateVCF.sl | awk '{print $4}')
+		annjob=$(sbatch -J AnnotateVCF_${PROJECT} $(depCheck $snpeffjob $vepjob) ${mailme} --array ${annArray}%12 ${BASEDIR}/slurm_scripts/annotateVCF.sl | awk '{print $4}')
 		if [ $? -ne 0 ] || [ "$annjob" == "" ]; then
 			(printf "FAILED!\n" 1>&2)
 			exit 1
@@ -1252,7 +1252,7 @@ fi
 #####clean up 
 #this takes us back to the original launch directory so that the final slurm out file will be written there
 cd ${launch}
-cleanupjob=$(sbatch -J Cleanup_${PROJECT} ${depend} ${mailme} ${BASEDIR}/slurm_scripts/cleanup.sl | awk '{print $4}')
+cleanupjob=$(sbatch -J Cleanup_${PROJECT} $(depCheck $movejob) ${mailme} ${BASEDIR}/slurm_scripts/cleanup.sl | awk '{print $4}')
 cleanupjob=$(eval $cmd | awk '{print $4}')
 if [ $? -ne 0 ] || [ "$cleanupjob" == "" ]; then
 	(printf "FAILED!\n" 1>&2)
