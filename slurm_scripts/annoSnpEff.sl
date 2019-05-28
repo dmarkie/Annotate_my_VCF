@@ -33,6 +33,7 @@ else
 		output=${SCRATCH_DIR}/${CONTIG}.vcf.gz
 		module purge
 		module load BCFtools
+		scontrol update jobid=${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID} jobname=SnpEff_${PROJECT}_${CONTIG}
 		cmd="srun $(which bcftools) view -r ${CONTIG} ${input} -Oz -o ${output}"
 		echo $cmd
 		eval $cmd || exit 1
@@ -58,7 +59,6 @@ else
 	module purge
 	module load BCFtools
 	module load snpEff
-	scontrol update jobid=${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID} jobname=SnpEff_${PROJECT}_${CONTIG}
 	if [ ${CONTIG} == "whole" ];then
 		region=""
 	else
