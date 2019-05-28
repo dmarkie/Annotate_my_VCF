@@ -1210,8 +1210,16 @@ fi
 
 #### Merge the annotated contig vcf.gz files together
 mkdir -p ${PROJECT_PATH}/slurm/merge
+# find the job that this stsge should check for dependencies
+if [ "${#sourcetagarray[@]}" -ne 0 ]; then
+	whatjob=$annjob
+elif [[ ${vep} == "yes" ]]; then
+	whatjob=$vepjob
+elif [[ ${snpeff} == "yes" ]]; then
+	whatjob=$snpeffjob
+fi
 if [ ! -f "${PROJECT_PATH}/done/merge/${PROJECT}.done" ]; then
-	mergejob=$(sbatch $(depCheck $snpeffjob $vepjob $annjob) -J Merge_${PROJECT} ${mailme} ${BASEDIR}/slurm_scripts/merge.sl | awk '{print $4}')
+	mergejob=$(sbatch $(depCheck $whatjob) -J Merge_${PROJECT} ${mailme} ${BASEDIR}/slurm_scripts/merge.sl | awk '{print $4}')
 	if [ $? -ne 0 ] || [ "$mergejob" == "" ]; then
 		(printf "FAILED!\n" 1>&2)
 		exit 1
@@ -1238,8 +1246,14 @@ fi
 
 ##### Move most files to destination directory
 mkdir -p ${PROJECT_PATH}/slurm/move
+if [[ ${BCSQ} == "yes" ]]; then
+	whatjob=$bcsqjob
+else
+	whatjob=$mergejob
+fi
+
 if [ ! -f "${PROJECT_PATH}/done/move/${PROJECT}.done" ]; then
-	movejob=$(sbatch -J Move_${PROJECT} $(depCheck $mergejob $bcsqjob) ${mailme} ${BASEDIR}/slurm_scripts/move.sl | awk '{print $4}')
+	movejob=$(sbatch -J Move_${PROJECT} $(depCheck $whatjob) ${mailme} ${BASEDIR}/slurm_scripts/move.sl | awk '{print $4}')
 	if [ $? -ne 0 ] || [ "$movejob" == "" ]; then
 		(printf "FAILED!\n" 1>&2)
 		exit 1
@@ -1253,7 +1267,6 @@ fi
 #this takes us back to the original launch directory so that the final slurm out file will be written there
 cd ${launch}
 cleanupjob=$(sbatch -J Cleanup_${PROJECT} $(depCheck $movejob) ${mailme} ${BASEDIR}/slurm_scripts/cleanup.sl | awk '{print $4}')
-cleanupjob=$(eval $cmd | awk '{print $4}')
 if [ $? -ne 0 ] || [ "$cleanupjob" == "" ]; then
 	(printf "FAILED!\n" 1>&2)
 	exit 1
