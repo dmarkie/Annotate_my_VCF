@@ -105,10 +105,7 @@ export parameterfile="${PROJECT_PATH}/parameters.sh"
 if [ -f ${parameterfile} ]; then
 	source ${parameterfile}
 	restartbanner
-	oldIFS=$IFS
-	IFS=","
-	CONTIGARRAY=(${CONTIGSTRING})
-	IFS=$oldIFS
+	CONTIGARRAY=($(echo ${CONTIGSTRING} | sed 's/,/ /g'))
 else 
 ## may add to make it possible to choose alternative contigs - either none (whole genome) or non-gapped regions - currently can specify alternative contig definitions in the defaults file
 	if [ -z $2 ]; then
@@ -136,15 +133,32 @@ else
 			done
 		fi
 	fi
+	# check each contig to see if there are any variants in the unannotated vcf, if not then don't put in the final contigstring
 	for i in ${!CONTIGARRAY[@]}; do
 		CONTIG=${CONTIGARRAY[$i]}
-		if [ -z ${CONTIGSTRING} ]; then
-			CONTIGSTRING=${CONTIG}
+		module load BCFtools
+		if [ $($(which bcftools) view -r ${CONTIG} -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -gt 0 ]; then
+			if [ -z ${CONTIGSTRING} ]; then
+				CONTIGSTRING=${CONTIG}
+			else
+				CONTIGSTRING=${CONTIGSTRING},${CONTIG}
+			fi
+			echo -e "The region ${CONTIG} contains variants"
 		else
-			CONTIGSTRING=${CONTIGSTRING},${CONTIG}
+			echo -e "The region ${CONTIG} contains no variants"
 		fi
 	done
+	#turn the contigstring back into contigarray
+	oldIFS=$IFS
+	IFS=","
+	CONTIGARRAY=(${CONTIGSTRING})
+	IFS=$oldIFS
+	echo -e "After excluding contigs without variants, the final contigs for processing are:"
+	for i in ${!CONTIGARRAY[@]}; do
+		echo ${CONTIGARRAY[${i}]}
+	done
 fi
+
 if [ -z ${contigarraynumber} ]; then
 	contigarraynumber=${#CONTIGARRAY[@]}
 fi
@@ -224,7 +238,7 @@ elif [ -z ${vep} ]; then
 	fi
 fi
 # make an array for the default sourcetags
-#oldIFS=$IFS
+oldIFS=$IFS
 IFS=","
 defaultsourcetags=(${default_sourcetags})
 IFS=$oldIFS
