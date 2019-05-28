@@ -5,8 +5,8 @@
 #SBATCH --mem		24M
 #SBATCH --mail-type	REQUEUE,FAIL,END
 #SBATCH --cpus-per-task	1
-#SBATCH --error		slurm_Cleanup-%j.out
-#SBATCH --output	slurm_Cleanup-%j.out
+#SBATCH --error		AnnotationCleanup-%j.out
+#SBATCH --output	AnnotationCleanup-%j.out
 
 # this will write a slurm out file into the 
 
