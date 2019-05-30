@@ -169,7 +169,7 @@ while read -r chr pos reg; do
         done
         if (( $(echo "${e} > ${reg}" | bc -l) )); then
             s=$((${e} - 1))
-            slength=$((${s}*${length_bp}))
+            slength=$((${s}*${length_bp}+1))
             contig="${chr}:${slength}-${pos}"
             if [ -z ${contigstring} ]
             then
