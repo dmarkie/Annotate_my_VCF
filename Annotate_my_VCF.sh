@@ -105,6 +105,7 @@ if [ -f ${parameterfile} ]; then
 	source ${parameterfile}
 	restartbanner
 	CONTIGARRAY=($(echo ${CONTIGSTRING} | sed 's/,/ /g'))
+
 else 
 ## may add to make it possible to choose alternative contigs - either none (whole genome) or non-gapped regions - currently can specify alternative contig definitions in the defaults file
 	if [ -z $2 ]; then
@@ -136,6 +137,11 @@ else
 	module load BCFtools
 	if [ $($(which bcftools) view -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -eq 0 ]; then
 		CONTIGSTRING=${CONTIGARRAY[0]}
+		#turn the contigstring back into contigarray
+		oldIFS=$IFS
+		IFS=","
+		CONTIGARRAY=(${CONTIGSTRING})
+		IFS=$oldIFS
 		echo -e "Your file contains no variants, but an \"annotated\" file will be produced, with the annotation descriptions in the header"
 	else
 		# check each contig to see if there are any variants in the unannotated vcf, if not then don't put in the final contigstring
