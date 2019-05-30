@@ -37,11 +37,6 @@ if [ ${#CONTIGARRAY[@]} -gt 1 ]; then
 
 	if [  ! -f ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.done ]; then
 		module purge
-#		module load picard
-#		cmd="srun $(which java) -jar $EBROOTPICARD/picard.jar GatherVcfs \
-#			${variant} \
-#			O=${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz"
-
 		module load GATK4
 		cmd="srun gatk --java-options -Xmx2g GatherVcfs \
 			${variant} \
