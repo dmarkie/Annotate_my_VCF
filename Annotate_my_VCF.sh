@@ -132,32 +132,38 @@ else
 			done
 		fi
 	fi
-	# check each contig to see if there are any variants in the unannotated vcf, if not then don't put in the final contigstring
-	for i in ${!CONTIGARRAY[@]}; do
-		CONTIG=${CONTIGARRAY[$i]}
-		module load BCFtools
-		if [ $($(which bcftools) view -r ${CONTIG} -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -gt 0 ]; then
-			if [ -z ${CONTIGSTRING} ]; then
-				CONTIGSTRING=${CONTIG}
+	# check to see if there are any variants in the file, if none then "annotate" using just the first contig so that a file with the appropriate annotations descriptions in the header is produced (with no variants)
+	module load BCFtools
+	if [ $($(which bcftools) view -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -eq 0 ]; then
+		CONTIGSTRING=${CONTIGARRAY[0]}
+		echo -e "Your file contains no variants, but an \"annotated\" file will be produced, with the annotation descriptions in the header"
+	else
+		# check each contig to see if there are any variants in the unannotated vcf, if not then don't put in the final contigstring
+		for i in ${!CONTIGARRAY[@]}; do
+			CONTIG=${CONTIGARRAY[$i]}
+			module load BCFtools
+			if [ $($(which bcftools) view -r ${CONTIG} -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -gt 0 ]; then
+				if [ -z ${CONTIGSTRING} ]; then
+					CONTIGSTRING=${CONTIG}
+				else
+					CONTIGSTRING=${CONTIGSTRING},${CONTIG}
+				fi
+				echo -e "The region ${CONTIG} contains variants"
 			else
-				CONTIGSTRING=${CONTIGSTRING},${CONTIG}
+				echo -e "The region ${CONTIG} contains no variants"
 			fi
-			echo -e "The region ${CONTIG} contains variants"
-		else
-			echo -e "The region ${CONTIG} contains no variants"
-		fi
-	done
-	#turn the contigstring back into contigarray
-	oldIFS=$IFS
-	IFS=","
-	CONTIGARRAY=(${CONTIGSTRING})
-	IFS=$oldIFS
-	echo -e "After excluding contigs without variants, the final contigs for processing are:"
-	for i in ${!CONTIGARRAY[@]}; do
-		echo ${CONTIGARRAY[${i}]}
-	done
+		done
+		#turn the contigstring back into contigarray
+		oldIFS=$IFS
+		IFS=","
+		CONTIGARRAY=(${CONTIGSTRING})
+		IFS=$oldIFS
+		echo -e "After excluding contigs without variants, the final contigs for processing are:"
+		for i in ${!CONTIGARRAY[@]}; do
+			echo ${CONTIGARRAY[${i}]}
+		done
+	fi
 fi
-
 if [ -z ${contigarraynumber} ]; then
 	contigarraynumber=${#CONTIGARRAY[@]}
 fi
@@ -204,13 +210,7 @@ if [ ${BCSQ} = yes ]; then
 		if [[ ${GFF3forBCSQ} == "q" ]]; then exit; fi;
 	done
 fi
-#if [ ${BCSQ} = yes ]; then
-#	while [[ ${Xcludedsamples} = "unknown" ]]; do
-#		echo -e "\nBCSQ will not work on trisomic calls.\nTo exclude BCSQ annotation of the X chromosome for XXX females enter\na comma delimited list of XXX sample names in your cohort,"
-#		read -e -p "or leave empty if none, or q to quit, and press [RETURN]: " Xcludedsamples
-#		if [[ ${Xcludedsamples} == "q" ]]; then exit; fi;
-#	done
-#fi
+
 ## run VEP
 if [[ ${vep} == "yes" ]] || [[ ${usedefaults} == "yes" ]]; then
 	vepspecies="${defaultvepspecies}"
@@ -945,7 +945,6 @@ if [ ! -f ${parameterfile} ]; then
 	echo "vepspecies=${vepspecies}" >> ${parameterfile}
 	echo "BCSQ=${BCSQ}" >> ${parameterfile}
 	echo "GFF3forBCSQ=${GFF3forBCSQ}" >> ${parameterfile}
-	echo "Xcludedsamples=${Xcludedsamples}" >> ${parameterfile}
 	echo "sourcetagarray=(${sourcetagarray[@]})" >> ${parameterfile}
 	echo "sourcefilearray=(${sourcefilearray[@]})" >> ${parameterfile}
 	echo "filetypearray=(${filetypearray[@]})" >> ${parameterfile}
