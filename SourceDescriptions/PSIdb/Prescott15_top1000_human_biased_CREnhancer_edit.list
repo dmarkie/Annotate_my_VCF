@@ -1,0 +1,5 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+6	P_adj	.	Float	The adjusted P value 	append
+7	log2FoldChange	.	Float	The second de novo mutation within the region 	append
+9	promoter_signature	.	String	Flag of promoter signature 	append

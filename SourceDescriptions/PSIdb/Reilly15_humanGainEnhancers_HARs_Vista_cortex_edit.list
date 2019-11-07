@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+4	HGE	.	String	The coordinates of the human gained enhancer  	append
+5	Overlap_element	.	String	Type of element(s) overlapped with the human gained enhancer  	append

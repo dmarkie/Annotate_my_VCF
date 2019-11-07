@@ -1,0 +1,4 @@
+##columns	#Chr	Pos	Pos	Ref	Alt
+##column	tag	Number	Type	Description	Merge
+5	gene	A	String	Ensemble Gene ID relevant to TraP score	single-overlaps
+6	score	A	Float	Transcript-inferred Pathogenicity score, which uses sequence context alterations to identify non-coding variation that causes disease. Range 0-1, the minimum score for pathogenic variants in the training set was 0.459.	single-overlaps

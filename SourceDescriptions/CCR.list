@@ -1,12 +1,12 @@
 ##columns	1	2	3
-##column tag	Number	Type	Description
-4	percentile	1	Float	Percentile for constrained coding region.
-5	gene	1	String	Gene containing this region.
-6	ranges	1	String	Range of region for CCR calculation.
-7	varflag	1	String	Varflag.
-8	syn_density	1	Float	Syn_density for CCR.
-9	cpg	1	Float	CpG weighting for CCR.
-10	cov_score	1	Float	Coverage weighting for CCR.
-11	resid	1	Float	Resid.
-12	resid_pctile	1	Float	Resid_pctile.
-13	unique_key	1	String	Key for this region.
+##column tag	Number	Type	Description	Merge
+4	percentile	1	Float	Percentile for constrained coding region.	single-overlaps
+5	gene	1	String	Gene containing this region.	single-overlaps
+6	ranges	1	String	Range of region for CCR calculation.	single-overlaps
+7	varflag	1	String	Varflag.	single-overlaps
+8	syn_density	1	Float	Syn_density for CCR.	single-overlaps
+9	cpg	1	Float	CpG weighting for CCR.	single-overlaps
+10	cov_score	1	Float	Coverage weighting for CCR.	single-overlaps
+11	resid	1	Float	Resid.	single-overlaps
+12	resid_pctile	1	Float	Resid_pctile.	single-overlaps
+13	unique_key	1	String	Key for this region.	single-overlaps

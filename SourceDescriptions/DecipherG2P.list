@@ -1,16 +1,16 @@
 ##columns	#chrom	start	end
-##column tag	Number	Type	Description
-4	gene_symbol	.	String	HGNC gene symbol
-5	gene_mim	.	String	OMIM gene number
-6	disease_name	.	String	Decipher disease name
-7	disease_mim	.	String	OMIM disease number
-8	DDD_category	.	String	Category with respect to certainty of causality
-9	allelic_requirement	.	String	Allelic arrangement for disease
-10	mutation_consequence	.	String	Mutation consequence for disease
-11	phenotypes	.	String	Phenotypes associated with disease, from Human Phenotype Ontology
-12	organ_specificity_list	.	String	Organs affected
-13	pmids	.	String	PMIDs
-14	panel	.	String	Panel
-15	prev_symbols	.	String	Previous symbols
-16	hgnc_id	.	String	HGNC ID
-17	gene_disease_pair_entry_date	.	String	Date entered
+##column tag	Number	Type	Description	Merge
+4	gene_symbol	.	String	HGNC gene symbol	append
+5	gene_mim	.	String	OMIM gene number	append
+6	disease_name	.	String	Decipher disease name	append
+7	disease_mim	.	String	OMIM disease number	append
+8	DDD_category	.	String	Category with respect to certainty of causality	append
+9	allelic_requirement	.	String	Allelic arrangement for disease	append
+10	mutation_consequence	.	String	Mutation consequence for disease	append
+11	phenotypes	.	String	Phenotypes associated with disease, from Human Phenotype Ontology	append
+12	organ_specificity_list	.	String	Organs affected	append
+13	pmids	.	String	PMIDs	append
+14	panel	.	String	Panel	append
+15	prev_symbols	.	String	Previous symbols	append
+16	hgnc_id	.	String	HGNC ID	append
+17	gene_disease_pair_entry_date	.	String	Date entered	append

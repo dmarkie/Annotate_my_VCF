@@ -1,6 +1,6 @@
 ##columns	1	2	3
-##column tag	Number	Type	Description
-4	observed	1	Integer	Observed number of genomic positions with combined alternative allelic frequency higher than chosen threshold.
-5	expected	1	Float	expected number of genomic positions with combined alternative allelic frequency higher than chosen threshold.
-6	score	1	Float	Context-dependent tolerance score. The lower the score is, the more intolerant to variation is the bin.
-7	percentile	1	Float	Genome-wide percentile of the CDTS. The lower the percentile, the more constrained the region is.
+##column tag	Number	Type	Description	Merge
+4	observed	1	Integer	Observed number of genomic positions with combined alternative allelic frequency higher than chosen threshold.	single-overlaps
+5	expected	1	Float	expected number of genomic positions with combined alternative allelic frequency higher than chosen threshold.	single-overlaps
+6	score	1	Float	Context-dependent tolerance score. The lower the score is, the more intolerant to variation is the bin.	single-overlaps
+7	percentile	1	Float	Genome-wide percentile of the CDTS. The lower the percentile, the more constrained the region is.	single-overlaps

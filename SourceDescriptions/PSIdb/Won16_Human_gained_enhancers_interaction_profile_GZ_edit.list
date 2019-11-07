@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+4	human_gained_enhancer	.	String	The searched human gained enhancer in a 10kb interval 	append
+8	interactor	.	String	The interacting locus in a 10kb interval in the format chr_start_end_FDR 	append

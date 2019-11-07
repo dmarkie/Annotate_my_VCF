@@ -1,9 +1,9 @@
 ##columns	chr	pos	pos	ref	alt
-##column tag	Number	Type	Description
-5	refAA	A	String	The reference amino acid
-6	altAA	A	String	The alternate amino acid
-7	strand	A	Integer	The strand 1 for positive 0 for negative
-8	trinucleotide_context	A	String	Trinucleotide context
-9	UCSC_gene	A	String	UCSC gene
-10	ExAC_coverage	Float	Coverage in ExAC data
-11	score	A	Float	The primateDL score
+##column	tag	Number	Type	Description	Merge
+5	refAA	A	String	The reference amino acid	single-overlaps
+6	altAA	A	String	The alternate amino acid	single-overlaps
+7	strand	A	Integer	The strand 1 for positive 0 for negative	single-overlaps
+8	trinucleotide_context	A	String	Trinucleotide context	single-overlaps
+9	UCSC_gene	A	String	UCSC gene	single-overlaps
+10	ExAC_coverage	A	Float	Coverage in ExAC data	single-overlaps
+11	score	A	Float	The primateDL score	single-overlaps

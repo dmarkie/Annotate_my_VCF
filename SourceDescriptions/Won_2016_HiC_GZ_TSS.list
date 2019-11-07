@@ -1,7 +1,7 @@
 ##columns	#chr	interacting_bin_start	interacting_bin_end
-##column tag	Number	Type	Description
-4	ENSGID	.	String	The Ensembl Gene ID for genes with a transcription start site within the 10kb interacting bin for Germinal Zone Hi-C data.
-5	TSS_bin_start	.	String	The start of the 10kb bin in which transcription start sites are contained.
-6	TSS_bin_end	.	String	The end of the 10kb bin in which transcription start sites are contained.
-7	FDR	.	Float	The false discovery rate for the interaction.
-8	Gene	.	String	The gene names for genes with with a transcription start site within the 10kb interacting bin for Germinal Zone Hi-C data.
+##column tag	Number	Type	Description	Merge
+4	ENSGID	.	String	The Ensembl Gene ID for genes with a transcription start site within the 10kb interacting bin for Germinal Zone Hi-C data.	append
+5	TSS_bin_start	.	String	The start of the 10kb bin in which transcription start sites are contained.	append
+6	TSS_bin_end	.	String	The end of the 10kb bin in which transcription start sites are contained.	append
+7	FDR	.	Float	The false discovery rate for the interaction.	append
+8	Gene	.	String	The gene names for genes with with a transcription start site within the 10kb interacting bin for Germinal Zone Hi-C data.	append

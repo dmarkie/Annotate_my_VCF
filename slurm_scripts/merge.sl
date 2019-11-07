@@ -9,7 +9,11 @@
 #SBATCH --error		slurm/merge/merge-%j.out
 #SBATCH --output	slurm/merge/merge-%j.out
 
-if [ -f ${parameterfile} ];then
+echo "Merge on $(date) on $hostname"
+echo "$0 $*"
+
+if [ -f ${parameterfile} ]
+then
 	source ${parameterfile}
 else
 	echo -e "Can't find the parameter file ${parameterfile}."
@@ -17,7 +21,8 @@ else
 fi
 
 # if the final output and done file already exists then exit with success
-if [ -f ${PROJECT_PATH}/done/merge/${PROJECT}.done ]; then
+if [ -f ${PROJECT_PATH}/done/merge/${PROJECT}.done ]
+then
 	echo "INFO: Output from Merge for ${PROJECT} already available"
  	exit 0
 fi
@@ -26,21 +31,29 @@ REFA=${REF}.fasta
 CONTIGARRAY=($(echo ${CONTIGSTRING} | sed 's/,/ /g'))
 CONTIG=${CONTIGARRAY[$(( $SLURM_ARRAY_TASK_ID - 1 ))]}
 mkdir -p ${PROJECT_PATH}/merge
-if [ ${#CONTIGARRAY[@]} -gt 1 ]; then
+
+if [ ${#CONTIGARRAY[@]} -gt 1 ]
+then
 	# generate the list of inputs 
-	for CONTIG in ${CONTIGARRAY[@]}; do
+	for CONTIG in ${CONTIGARRAY[@]}
+	do
 		#variant="${variant} I=${PROJECT_PATH}/ann/${CONTIG}_ann.vcf.gz"
 		variant="${variant} -I ${PROJECT_PATH}/ann/${CONTIG}_ann.vcf.gz"
 	done
 
-	scontrol update jobid=${SLURM_JOB_ID} jobname=Merge_${PROJECT}
+	scontrol update \
+		jobid=${SLURM_JOB_ID} \
+		jobname=Merge_${PROJECT}
 
-	if [  ! -f ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.done ]; then
+	if [  ! -f ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.done ]
+	then
 		module purge
 		module load GATK4
-		cmd="srun gatk --java-options -Xmx2g GatherVcfs \
-			${variant} \
-			-O ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz"
+		cmd="srun \
+gatk --java-options -Xmx2g \
+GatherVcfs \
+${variant} \
+-O ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz"
 		echo $cmd
 		eval $cmd || exit 1$?
 		mkdir -p ${PROJECT_PATH}/done/merge
@@ -48,10 +61,14 @@ if [ ${#CONTIGARRAY[@]} -gt 1 ]; then
 	else
 		echo "INFO: Output from Merge for ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz already available"		
 	fi
-	if [  ! -f ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.tbi.done ]; then
+	
+	if [  ! -f ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.tbi.done ]
+	then
 		module purge
-		module load BCFtools
-		cmd="$(which bcftools) index -t ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz"
+		module load ${bcftools}
+		cmd="srun \
+$(which bcftools) index \
+-t ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz"
 		echo $cmd
 		eval $cmd || exit 1$?
 		touch ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.tbi.done
@@ -59,7 +76,8 @@ if [ ${#CONTIGARRAY[@]} -gt 1 ]; then
 		echo "INFO: Output from Merge for ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz.tbi already available"
 	fi
 
-elif [ ${#CONTIGARRAY[@]} -eq 1 ]; then
+elif [ ${#CONTIGARRAY[@]} -eq 1 ]
+then
 	mv ${PROJECT_PATH}/ann/${CONTIGARRAY[0]}_ann.vcf.gz ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz
 	mkdir -p ${PROJECT_PATH}/done/merge
 	touch ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.done
@@ -73,5 +91,6 @@ fi
 
 touch ${PROJECT_PATH}/done/merge/${PROJECT}.done
 
+echo "Merge complete"
 
 exit 0

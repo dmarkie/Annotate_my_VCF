@@ -30,31 +30,36 @@ EOF
 }
 
 #$1 is the full path to the unannotated vcf to be annotated
-#$2 is the full path to the defaults you would like to use
+#$2 is the full path to the defaults file you would like to use
+# if these arguments are used it will not be interactive and proceed only with the options set in the defaults files. 
 
-if [[ $email == "" ]]; then
-	oldIFS=$IFS
-	IFS=$'\n'
-	userList=($(cat /etc/slurm/userlist.txt | grep $USER))
-	for entry in ${userList[@]}; do
-		testUser=$(echo $entry | awk -F':' '{print $1}')
-		if [ "$testUser" == "$USER" ]; then
-			export email=$(echo $entry | awk -F':' '{print $3}')
-			break
-		fi
-	done
-	IFS=$oldIFS
-	if [ $email == "" ]; then
-		(echo "FAIL: Unable to locate email address for $USER in /etc/slurm/userlist.txt!" 1>&2)
-		exit 1
-	else
-		export MAIL_TYPE=REQUEUE,FAIL,END
-		(printf "%-22s%s (%s)\n" "Email address" "${email}" "$MAIL_TYPE" 1>&2)
-	fi
-fi
-if [[ ${email} != "none" ]]; then
-	mailme="--mail-user ${email} --mail-type $MAIL_TYPE"
-fi
+# Specify the version of bcftools to use - this is currently a development version of bcftools that allows the use of mergelogic options to appropriately annotate overlapping intervals, and also avoid invoking mergelogic (with subsequent memory blowout) with large non-overlapping interval files.
+export bcftools="BCFtools/d-1.9-20190926"
+
+# this is an attempt to pick up the email address of the user so that alerts can be emailed, but it has been disabled
+# if [[ $email == "" ]]; then
+# 	oldIFS=$IFS
+# 	IFS=$'\n'
+# 	userList=($(cat /etc/slurm/userlist.txt | grep $USER))
+# 	for entry in ${userList[@]}; do
+# 		testUser=$(echo $entry | awk -F':' '{print $1}')
+# 		if [ "$testUser" == "$USER" ]; then
+# 			export email=$(echo $entry | awk -F':' '{print $3}')
+# 			break
+# 		fi
+# 	done
+# 	IFS=$oldIFS
+# 	if [ $email == "" ]; then
+# 		(echo "FAIL: Unable to locate email address for $USER in /etc/slurm/userlist.txt!" 1>&2)
+# 		exit 1
+# 	else
+# 		export MAIL_TYPE=REQUEUE,FAIL,END
+# 		(printf "%-22s%s (%s)\n" "Email address" "${email}" "$MAIL_TYPE" 1>&2)
+# 	fi
+# fi
+# if [[ ${email} != "none" ]]; then
+# 	mailme="--mail-user ${email} --mail-type $MAIL_TYPE"
+# fi
 
 
 mybanner
@@ -76,7 +81,7 @@ else
 fi
 export BASEDIR=$(dirname $0)
 source ${BASEDIR}/basefunctions.sh
-## if $2 is a file then source it for your specified default annotations, otherwise source a standard file 
+## if $2 is a file then source it for your specified default annotations, otherwise source the standard file 
 ## will need to write this to parameters so it can be picked up on restart
 if [ -z $2 ]; then
 	if [ -z ${default} ]; then
@@ -107,7 +112,7 @@ if [ -f ${parameterfile} ]; then
 	CONTIGARRAY=($(echo ${CONTIGSTRING} | sed 's/,/ /g'))
 
 else 
-## may add to make it possible to choose alternative contigs - either none (whole genome) or non-gapped regions - currently can specify alternative contig definitions in the defaults file
+## show the default contigs, and allow to specify alternatives
 	if [ -z $2 ]; then
 		for i in ${!CONTIGARRAY[@]}; do
 			echo ${CONTIGARRAY[${i}]}
@@ -134,8 +139,8 @@ else
 		fi
 	fi
 	# check to see if there are any variants in the file, if none then "annotate" using just the first contig so that a file with the appropriate annotations descriptions in the header is produced (with no variants)
-	module load BCFtools
-	if [ $($(which bcftools) view -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -eq 0 ]; then
+	module load ${bcftools}
+	if [ $($(which bcftools) view -Ov ${unannotatedvcf} -H | head -n 10 | wc -l) -eq 0 ]; then
 		CONTIGSTRING=${CONTIGARRAY[0]}
 		#turn the contigstring back into contigarray
 		oldIFS=$IFS
@@ -144,11 +149,10 @@ else
 		IFS=$oldIFS
 		echo -e "Your file contains no variants, but an \"annotated\" file will be produced, with the annotation descriptions in the header"
 	else
-		# check each contig to see if there are any variants in the unannotated vcf, if not then don't put in the final contigstring
+		# check each contig to see if there are any variants in the unannotated vcf, if not then don't put in the final contigstring - this saves time when annotating very sparse vcfs - contigs with no variants do not ned to be annotated!
 		for i in ${!CONTIGARRAY[@]}; do
 			CONTIG=${CONTIGARRAY[$i]}
-			module load BCFtools
-			if [ $($(which bcftools) view -r ${CONTIG} -Ov ${unannotatedvcf} | grep -v "^#" | head -n 10 | wc -l) -gt 0 ]; then
+			if [ $($(which bcftools) view -r ${CONTIG} -H -Ov ${unannotatedvcf} | head -n 10 | wc -l) -gt 0 ]; then
 				if [ -z ${CONTIGSTRING} ]; then
 					CONTIGSTRING=${CONTIG}
 				else
@@ -174,7 +178,8 @@ if [ -z ${contigarraynumber} ]; then
 	contigarraynumber=${#CONTIGARRAY[@]}
 fi
 
-#### run snpeff
+
+#### do you want to run snpeff
 if [[ ${snpeff} == "yes" ]] || [[ ${usedefaults} == "yes" ]]; then
 	snpeff_format="${defaultsnpeff_format}"
 	snpeffdataversion="${defaultsnpeffdataversion}"
@@ -201,7 +206,7 @@ elif [ -z ${snpeff} ]; then
 		done
 	fi
 fi
-## run bcftools csq
+## do you want to run bcftools csq
 if [ -z ${BCSQ} ]; then
 	while [[ ${BCSQ} != "yes" ]] && [[ ${BCSQ} != "no" ]] ; do
 		echo -e "\nWould you like to annotate with bcftools CSQ (BCSQ annotation)?\nThis annotation requires the file to have the Ensembl Variant Effect Predictor's CSQ annotation.\nIf your input VCF is not already annotated using VEP then include it when asked.\n Note that this step will fail and should be avoided if any individuals have three or more alleles at any position eg XXX, XXY, XYY or trisomy 21."
@@ -217,7 +222,7 @@ if [ ${BCSQ} = yes ]; then
 	done
 fi
 
-## run VEP
+## do you want to run VEP
 if [[ ${vep} == "yes" ]] || [[ ${usedefaults} == "yes" ]]; then
 	vepspecies="${defaultvepspecies}"
 	vepassembly="${defaultvepassembly}"
@@ -242,6 +247,7 @@ elif [ -z ${vep} ]; then
 		fi
 	fi
 fi
+
 # make an array for the default sourcetags
 oldIFS=$IFS
 IFS=","
@@ -684,10 +690,10 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 			for i in $(echo ${annotations} | awk -F, '{ for (i=1; i<=NF; i++) print $i }'); do
 				if [ -z ${ann[${sourcecount}]} ]; then
 					ann[${sourcecount}]="${sourcetag[${sourcecount}]}_${i}:=${i}"
-					#ann[${sourcecount}]="${i}"
+					merge[${sourcecount}]="none"
 				else
 					ann[${sourcecount}]="${ann[${sourcecount}]},${sourcetag[${sourcecount}]}_${i}:=${i}"
-					#ann[${sourcecount}]="${ann[${sourcecount}]},${i}"
+					merge[${sourcecount}]="${merge[${sourcecount}]},none"
 				fi
 			done
 	# for bed	
@@ -698,11 +704,14 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 			unset Type
 			unset Description
 			unset Head
+			unset Merge
 		# fix IDs for CHROM POS and TO -for a bed file these will always be the same - the index here is the column number
 			ID[1]=CHROM
 			ID[2]=FROM
 			ID[3]=TO
-			
+			Merge[1]=CHROM
+			Merge[2]=FROM
+			Merge[3]=TO
 			#oldIFS=$IFS
 			IFS=","
 			annotationsarray=(${annotations})
@@ -722,6 +731,7 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 						Number[${k}]=$(echo "${newdescription}" | awk -F"\t" "\$2 ~ /^${j}\$/ {print \$3}" - )
 						Type[${k}]=$(echo "${newdescription}" | awk -F"\t" "\$2 ~ /^${j}\$/ {print \$4}" - )
 						Description[${k}]=$(echo "${newdescription}" |awk -F"\t" "\$2 ~ /^${j}\$/ {print \$5}" - )
+						Merge[${k}]=$(echo "${newdescription}" |awk -F"\t" "\$2 ~ /^${j}\$/ {print \$6}" - )
 					fi
 				done
 			fi
@@ -767,6 +777,13 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 							if [[ "${Description[${columncount}]}" == "q" ]]; then exit; fi
 							Description[${columncount}]="${Description[${columncount}]}"
 						done
+						while [ -z "${Merge[${columncount}]}" ] ; do
+							echo -e "\nIf there are overlapping intervals, identify a merge option when annotating (eg append will produce a comma-delimited array,"
+							read -p "none will simply use the first entry), or q to quit, then press [RETURN]: " Merge[${columncount}]
+							if [[ "${Merge[${columncount}]}" == "q" ]]; then exit; fi
+							Merge[${columncount}]="${Merge[${columncount}]}"
+						done
+
 						#make the header entry for this ID 
 						Head[${columncount}]="##INFO=<ID=${ID[${columncount}]},Number=${Number[${columncount}]},Type=${Type[${columncount}]},Description=\"${Description[${columncount}]}\">"
 						# ,Source=\"$(basename ${sourcefile[${sourcecount}]})\"
@@ -774,6 +791,9 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 				done
 				if [ -z ${ID[${columncount}]} ]; then
 					ID[${columncount}]="-"
+				fi
+				if [ -z ${Merge[${columncount}]} ]; then
+					Merge[${columncount}]="-"
 				fi
 				#make the ann expression for a bed - this is a comma delimited list of column IDs up to the last one you wish to use - unused columns need - eg CHROM,FROM,TO,-,MYANNO 
 				if [[ -z ${ann[${sourcecount}]} ]]; then
@@ -787,13 +807,19 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 				elif [ ! -z "${Head[${columncount}]}" ]; then
 					header[${sourcecount}]="${header[${sourcecount}]}\n${Head[${columncount}]}"
 				fi
+				# make the merge expression for a bed - a comma delimited list of merge options
+				if [ -z "${merge[${sourcecount}]}" ]; then
+					merge[${sourcecount}]="${Merge[${columncount}]}"
+				else 
+					merge[${sourcecount}]="${merge[${sourcecount}]},${Merge[${columncount}]}"
+				fi
 			done
 			
-			
-			
+					
 	#for tab 
 		elif [[ ${filetype[${sourcecount}]} == "tab" ]]; then
 			unset ID
+			unset Merge
 			#typeset -A ID
 	# sort out the column IDs for CHROM TO FROM	POS TO FROM	- uses column headers to identify column numbers - makes an array of CHROM POS etc indexed by column number the "head -n 3 | grep -v "^##" | head -n 1"  is to ignore the first line or two if they begin with ##, ed the CADD file
 			tabheadarray=($(zcat ${sourcefile[${sourcecount}]} | head -n 3 | grep -v "^##" | head -n 1 ))
@@ -802,25 +828,32 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 				columncount=$(( ${columncount} + 1 ))
 				if [ "${chrom}" == "${i}" ]; then
 					ID[${columncount}]="CHROM"
+					Merge[${columncount}]="CHROM"
 				fi
 				if [ "${from}" == "${i}" ] && [ "${to}" == "${i}" ]; then
 					ID[${columncount}]="POS"
+					Merge[${columncount}]="POS"
 				elif [ "${from}" == "${i}" ]; then
 					ID[${columncount}]="FROM"
+					Merge[${columncount}]="FROM"
 				elif [ "${to}" == "${i}" ]; then
 					ID[${columncount}]="TO"
+					Merge[${columncount}]="TO"
 				fi
 				if [ "${ref}" == "${i}" ]; then
 					ID[${columncount}]="REF"
+					Merge[${columncount}]="REF"
 				fi
 				if [ "${alt}" == "${i}" ]; then
 					ID[${columncount}]="ALT"
+					Merge[${columncount}]="ALT"
 				fi
 			done
 			unset Number
 			unset Type
 			unset Description
 			unset Head
+			
 			
 			#oldIFS=$IFS
 			IFS=","
@@ -842,6 +875,7 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 						Number[${k}]=$(echo "${newdescription}" | awk -F"\t" "\$2 ~ /^${j}\$/ {print \$3}" - )
 						Type[${k}]=$(echo "${newdescription}" | awk -F"\t" "\$2 ~ /^${j}\$/ {print \$4}" - )
 						Description[${k}]=$(echo "${newdescription}" |awk -F"\t" "\$2 ~ /^${j}\$/ {print \$5}" - )
+						Merge[${k}]=$(echo "${newdescription}" |awk -F"\t" "\$2 ~ /^${j}\$/ {print \$6}" - )
 					fi
 				done
 			fi
@@ -896,6 +930,13 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 							if [[ "${Description[${columncount}]}" == "q" ]]; then exit; fi
 							Description[${columncount}]="${Description[${columncount}]}"
 						done
+						while [ -z "${Merge[${columncount}]}" ] ; do
+							echo -e "\nIf there are overlapping intervals, identify a merge option when annotating (eg append will produce a comma-delimited array,"
+							read -p "none will simply use the first entry), or q to quit, then press [RETURN]: " Merge[${columncount}]
+							if [[ "${Merge[${columncount}]}" == "q" ]]; then exit; fi
+							Merge[${columncount}]="${Merge[${columncount}]}"
+						done
+
 					#make the header entry for this ID 
 						Head[${columncount}]="##INFO=<ID=${ID[${columncount}]},Number=${Number[${columncount}]},Type=${Type[${columncount}]},Description=\"${Description[${columncount}]}\">"
 						# ,Source=\"$(basename ${sourcefile[${sourcecount}]})\"
@@ -903,6 +944,9 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 				done
 				if [ -z ${ID[${columncount}]} ]; then
 					ID[${columncount}]="-"
+				fi
+				if [ -z ${Merge[${columncount}]} ]; then
+					Merge[${columncount}]="-"
 				fi
 				#make the ann expression for a tab - this is a comma delimited list of column IDs up to the last one you wish to use - unused columns need - eg CHROM,FROM,TO,-,MYANNO 
 				if [[ -z ${ann[${sourcecount}]} ]]; then
@@ -915,6 +959,12 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 					header[${sourcecount}]="${Head[${columncount}]}"
 				elif [ ! -z "${Head[${columncount}]}" ]; then
 					header[${sourcecount}]="${header[${sourcecount}]}\n${Head[${columncount}]}"
+				fi
+				# make the merge expression for a tab - a comma delimited list of merge options
+				if [ -z "${merge[${sourcecount}]}" ]; then
+					merge[${sourcecount}]="${Merge[${columncount}]}"
+				else 
+					merge[${sourcecount}]="${merge[${sourcecount}]},${Merge[${columncount}]}"
 				fi
 			done
 		fi
@@ -932,6 +982,8 @@ while [[ ${repeat} != "no" ]] && [ ! -f ${parameterfile} ]; do
 			filetypearray=(${filetypearray[@]} ${filetype[${sourcecount}]})
 		# build an annotation array
 			annotatearray=(${annotatearray[@]} ${ann[${sourcecount}]})
+		# build a merge array
+			mergearray=(${mergearray[@]} ${merge[${sourcecount}]})
 		fi
 	fi
 done
@@ -955,6 +1007,7 @@ if [ ! -f ${parameterfile} ]; then
 	echo "sourcefilearray=(${sourcefilearray[@]})" >> ${parameterfile}
 	echo "filetypearray=(${filetypearray[@]})" >> ${parameterfile}
 	echo "annotatearray=(${annotatearray[@]})" >> ${parameterfile}
+	echo "mergearray=(${mergearray[@]})" >> ${parameterfile}
 	for i in ${!header[@]}; do
 		if [ ! -z "${header[${i}]}" ] && [[ "${header[${i}]}" != "null" ]]; then
 			mkdir -p ${PROJECT_PATH}/headers
@@ -968,6 +1021,8 @@ if ! mkdir -p ${PROJECT_PATH}/slurm; then
 fi
 launch=$PWD
 cd ${PROJECT_PATH}
+
+## Set up the SnpEff jobs
 if [[ ${snpeff} == "yes" ]]; then
 	mkdir -p ${PROJECT_PATH}/slurm/snpeff
 	snpeffArray=""
@@ -989,6 +1044,7 @@ if [[ ${snpeff} == "yes" ]]; then
 	fi
 fi
 
+## Set up the VEP jobs
 
 if [[ ${vep} == "yes" ]]; then
 	mkdir -p ${PROJECT_PATH}/slurm/vep
@@ -1014,6 +1070,7 @@ if [[ ${vep} == "yes" ]]; then
 		fi
 	fi
 fi
+## Set up the annotation jobs from vcf, bed and tab source files
 
 if [ "${#sourcetagarray[@]}" -ne 0 ]; then
 	mkdir -p ${PROJECT_PATH}/slurm/ann
@@ -1063,7 +1120,8 @@ if [ ! -f "${PROJECT_PATH}/done/merge/${PROJECT}.done" ]; then
 fi
 
 
-###### Do the BCSQ annotatiom
+###### Do the BCSQ annotation (done after merging so that when contigs are subchromosomal they are stitched back together for extended haplotypes)
+mkdir -p ${PROJECT_PATH}/slurm/bcsq
 if [[ ${BCSQ} == "yes" ]]; then
 	if [ ! -f "${PROJECT_PATH}/done/bcsq/${PROJECT}_ann.vcf.gz.tbi.done" ]; then
 		bcsqjob=$(sbatch -J BCSQ_${PROJECT} $(depCheck $mergejob) ${mailme} ${BASEDIR}/slurm_scripts/annoBCSQ.sl | awk '{print $4}')

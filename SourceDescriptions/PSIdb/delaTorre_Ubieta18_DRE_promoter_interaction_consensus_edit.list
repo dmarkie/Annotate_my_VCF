@@ -1,0 +1,6 @@
+##columns	#EnhancerChr	EnhancerStart	EnhancerEnd
+##column tag	Number	Type	Description 	Merge
+6	corPfdr	.	Float	The P value of correlation adjusted by FDR 	append
+7	ENSGID	.	String	The Ensembl ID of the gene mapped by the promoter 	append
+8	hgnc_symbol	.	String	The HGNC symbol of the gene mapped by the promoter 	append
+13	interactingPromoter	.	String	The interacting promoter in the chr_start_end format 	append

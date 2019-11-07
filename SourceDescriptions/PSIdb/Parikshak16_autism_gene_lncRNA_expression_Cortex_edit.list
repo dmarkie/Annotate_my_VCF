@@ -1,0 +1,6 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+4	ENSEMBL_ID	.	String	The Ensembl ID of the gene differentially expressed in cortex 	append
+5	HGNC_Symbol	.	String	The HGNC symbol of the gene differentially expressed in cortex 	append
+9	log2FC_ASD_vs_CTL	.	Float	The fold change of differential expression in the log2 scale 	append
+11	FDR-adjusted_P_ASD_vs_CTL	.	Float	The FDR adjusted P value of differential expression between autism and control 	append

@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+5	TSS	.	String	The searched TSS in a 10kb interval in the format chr_start_end_ENSGID 	append
+9	interactor	.	String	The interacting locus in a 10kb interval in the format chr_start_end_FDR 	append

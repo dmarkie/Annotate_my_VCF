@@ -1,11 +1,11 @@
 ##columns	#chr37	start37	end37
-##column tag	Number	Type	Description
-7	Gene_Number	.	String	The MIM locus number
-8	Gene_Symbols	.	String	Gene symbols, including alternates separated by pipes
-9	Approved_Symbol	.	String	The approved gene symbol, usually HGNC
-10	Entrez_Gene_ID	.	String	The gene ID from Entrez
-11	Ensembl_Gene_ID	.	String	The gene ID from Ensembl
-12	Phenotype	.	String	Phenotype description
-13	Phenotype_Number	.	String	The phenotype number from OMIM
-14	Phenotype_Mapping_Method	.	String	1 - the disorder is placed on the map based on its association with a gene, but the underlying defect is not known. 2 - the disorder has been placed on the map by linkage, no mutation has been found. 3 - the molecular basis for the disorder is known, a mutation has been found in the gene. 4 - a contiguous gene deletion or duplication syndrome, multiple genes are deleted or duplicated causing the phenotype
-15	Inheritance	.	String	Inheritance according to OMIM. If multiple types are present for the same phenotype they are separated by pipes. The possible types are: Autosomal_recessive, Autosomal_dominant, Isolated_cases, Digenic_recessive, Multifactorial, Somatic_mutation, Mitochondrial, Somatic_mosaicism, X_linked_dominant, X_linked_recessive, X_linked, Y_linked
+##column tag	Number	Type	Description	Merge
+7	Gene_Number	.	String	The MIM locus number	append
+8	Gene_Symbols	.	String	Gene symbols, including alternates separated by pipes	append
+9	Approved_Symbol	.	String	The approved gene symbol, usually HGNC	append
+10	Entrez_Gene_ID	.	String	The gene ID from Entrez	append
+11	Ensembl_Gene_ID	.	String	The gene ID from Ensembl	append
+12	Phenotype	.	String	Phenotype description	append
+13	Phenotype_Number	.	String	The phenotype number from OMIM	append
+14	Phenotype_Mapping_Method	.	String	1 - the disorder is placed on the map based on its association with a gene, but the underlying defect is not known. 2 - the disorder has been placed on the map by linkage, no mutation has been found. 3 - the molecular basis for the disorder is known, a mutation has been found in the gene. 4 - a contiguous gene deletion or duplication syndrome, multiple genes are deleted or duplicated causing the phenotype	append
+15	Inheritance	.	String	Inheritance according to OMIM. If multiple types are present for the same phenotype they are separated by pipes. The possible types are: Autosomal_recessive, Autosomal_dominant, Isolated_cases, Digenic_recessive, Multifactorial, Somatic_mutation, Mitochondrial, Somatic_mosaicism, X_linked_dominant, X_linked_recessive, X_linked, Y_linked	append

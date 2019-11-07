@@ -1,0 +1,5 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+4	CRE	.	String	The full coordinates of the cis regulatory elment 	append
+7	type	.	String	The type of cis regulatory elment 	append
+8	humanSpecific	.	String	Flag of human specificity 	append

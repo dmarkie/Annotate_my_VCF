@@ -1,80 +1,79 @@
 ##columns	#chromosome	start_position	end_position
-##column tag	Number	Type	Description
-4	gene	.	String	Gene name for gnomAD LOF metrics, gene based.
-5	transcript	.	String	Transcript for gnomAD LOF metrics, gene based.
-6	obs_mis	.	Integer	Observed number of missense variants in gnomAD for gene.
-7	exp_mis	.	Float	Expected number of missense variants in gnomAD for gene.
-8	oe_mis	.	Float	
-9	mu_mis	.	Float	
-10	possible_mis	.	Integer	
-11	obs_mis_pphen	.	Integer	
-12	exp_mis_pphen	.	Float	
-13	oe_mis_pphen	.	Float	
-14	possible_mis_pphen	.	Integer	
-15	obs_syn	.	Integer	
-16	exp_syn	.	Float	
-17	oe_syn	.	Float	
-18	mu_syn	.	Float	
-19	possible_syn	.	Integer	
-20	obs_lof	.	Integer	
-21	mu_lof	.	Float	
-22	possible_lof	.	Integer	
-23	exp_lof	.	Float	
-24	pLI	.	Float	The closer pLI is to one, the more intolerant of protein-truncating variants the transcript appears to be. We consider pLI ≥ 0.9 as an extremely intolerant set of transcripts.
-25	pNull	.	Float	
-26	pRec	.	Float	
-27	oe_lof	.	Float	The raw observed vs expected ratio for lof of function variants.
-28	oe_syn_lower	.	Float	
-29	oe_syn_upper	.	Float	
-30	oe_mis_lower	.	Float	
-31	oe_mis_upper	.	Float	
-32	oe_lof_lower	.	Float	
-33	oe_lof_upper	.	Float	
-34	constraint_flag	.	String	
-35	syn_z	.	Float	Deviation of observed synonymous variants from the expected number in standard deviations from the mean.
-36	mis_z	.	Float	Deviation of observed missense variants from the expected number in standard deviations from the mean.
-37	lof_z	.	Float	Deviation of observed loss of function variants from the expected number in standard deviations from the mean.
-38	oe_lof_upper_rank	.	Integer	The raw observed vs expected ratio for lof of function variants.
-39	oe_lof_upper_bin	.	Integer	The raw observed vs expected ratio for lof of function variants.
-40	oe_lof_upper_bin_6	.	Integer	The raw observed vs expected ratio for lof of function variants.
-41	n_sites	.	Integer	
-42	classic_caf	.	Float	
-43	max_af	.	Float	
-44	no_lofs	.	Integer	
-45	obs_het_lof	.	Integer	
-46	obs_hom_lof	.	Integer	The observed homozygous lof variants, which is useful for interpretation of recessive variants.
-47	defined	.	Integer	
-48	p	.	Float	
-49	exp_hom_lof	.	Float	
-50	classic_caf_afr	.	Float	
-51	classic_caf_amr	.	Float	
-52	classic_caf_asj	.	Float	
-53	classic_caf_eas	.	Float	
-54	classic_caf_fin	.	Float	
-55	classic_caf_nfe	.	Float	
-56	classic_caf_oth	.	Float	
-57	classic_caf_sas	.	Float	
-58	p_afr	.	Float	
-59	p_amr	.	Float	
-60	p_asj	.	Float	
-61	p_eas	.	Float	
-62	p_fin	.	Float	
-63	p_nfe	.	Float	
-64	p_oth	.	Float	
-65	p_sas	.	Float	
-66	transcript_type	.	String	
-67	gene_id	.	String	
-68	transcript_level	.	Integer	
-69	cds_length	.	Integer	
-70	num_coding_exons	.	Integer	
-71	gene_type	.	String	
-72	gene_length	.	Integer	
-73	exac_pLI	.	Float	The closer pLI is to one, the more intolerant of protein-truncating variants the transcript appears to be. We consider pLI ≥ 0.9 as an extremely intolerant set of transcripts.
-74	exac_obs_lof	.	Integer	
-75	exac_exp_lof	.	Float	
-76	exac_oe_lof	.	Float	
-77	brain_expression	.	String	
-78	chromosome	.	String	
-79	start_position	.	Integer	
-80	end_position	.	Integer	
-
+##column tag	Number	Type	Description Merge
+4	gene	.	String	Gene name for gnomAD LOF metrics, gene based.	append
+5	transcript	.	String	Transcript for gnomAD LOF metrics, gene based.	append
+6	obs_mis	.	Integer	Observed number of missense variants in gnomAD for gene.	append
+7	exp_mis	.	Float	Expected number of missense variants in gnomAD for gene.	append
+8	oe_mis	.	Float	mm	append
+9	mu_mis	.	Float	mm	append
+10	possible_mis	.	Integer	mm	append
+11	obs_mis_pphen	.	Integer	mm	append
+12	exp_mis_pphen	.	Float	mm	append
+13	oe_mis_pphen	.	Float	mm	append
+14	possible_mis_pphen	.	Integer	mm	append
+15	obs_syn	.	Integer	mm	append
+16	exp_syn	.	Float	mm	append
+17	oe_syn	.	Float	mm	append
+18	mu_syn	.	Float	mm	append
+19	possible_syn	.	Integer	mm	append
+20	obs_lof	.	Integer	mm	append
+21	mu_lof	.	Float	mm	append
+22	possible_lof	.	Integer	mm	append
+23	exp_lof	.	Float	mm	append
+24	pLI	.	Float	The probability of being loss-of-function intolerant (intolerant of both heterozygous and homozygous lof variants). This a transcript/gene-relevant score and should be viewed in the context of the gene and transcript. All variants in the coding regions AND introns of the transcript will be annotated, irrespective of any functional effect of the variant. The closer pLI is to one, the more intolerant of protein-truncating variants the transcript appears to be. We consider pLI ≥ 0.9 as an extremely intolerant set of transcripts.	append
+25	pNull	.	Float	The probability of being tolerant of both heterozygous and homozygous lof variants. This a transcript/gene-relevant score and should be viewed in the context of the gene and transcript. All variants in thecoding regions AND introns of the transcript will be annotated, irrespective of any functional effect of the variant.	append
+26	pRec	.	Float	The probability of being intolerant of homozygous, but not heterozygous lof variants. This a transcript/gene-relevant score and should be viewed in the context of the gene and transcript. All variants in the coding regions AND introns of the transcript will be annotated, irrespective of any functional effect of the variant.	append
+27	oe_lof	.	Float	The raw observed vs expected ratio for lof of function variants.	append
+28	oe_syn_lower	.	Float	mm	append
+29	oe_syn_upper	.	Float	mm	append
+30	oe_mis_lower	.	Float	mm	append
+31	oe_mis_upper	.	Float	mm	append
+32	oe_lof_lower	.	Float	mm	append
+33	oe_lof_upper	.	Float	mm	append
+34	constraint_flag	.	String	mm	append
+35	syn_z	.	Float	Deviation of observed synonymous variants from the expected number in standard deviations from the mean.	append
+36	mis_z	.	Float	Deviation of observed missense variants from the expected number in standard deviations from the mean.	append
+37	lof_z	.	Float	Deviation of observed loss of function variants from the expected number in standard deviations from the mean.	append
+38	oe_lof_upper_rank	.	Integer	The raw observed vs expected ratio for lof of function variants.	append
+39	oe_lof_upper_bin	.	Integer	The raw observed vs expected ratio for lof of function variants.	append
+40	oe_lof_upper_bin_6	.	Integer	The raw observed vs expected ratio for lof of function variants.	append
+41	n_sites	.	Integer	mm	append
+42	classic_caf	.	Float	mm	append
+43	max_af	.	Float	mm	append
+44	no_lofs	.	Integer	mm	append
+45	obs_het_lof	.	Integer	mm	append
+46	obs_hom_lof	.	Integer	The observed homozygous lof variants, which is useful for interpretation of recessive variants.	append
+47	defined	.	Integer	mm	append
+48	p	.	Float	mm	append
+49	exp_hom_lof	.	Float	mm	append
+50	classic_caf_afr	.	Float	mm	append
+51	classic_caf_amr	.	Float	mm	append
+52	classic_caf_asj	.	Float	mm	append
+53	classic_caf_eas	.	Float	mm	append
+54	classic_caf_fin	.	Float	mm	append
+55	classic_caf_nfe	.	Float	mm	append
+56	classic_caf_oth	.	Float	mm	append
+57	classic_caf_sas	.	Float	mm	append
+58	p_afr	.	Float	mm	append
+59	p_amr	.	Float	mm	append
+60	p_asj	.	Float	mm	append
+61	p_eas	.	Float	mm	append
+62	p_fin	.	Float	mm	append
+63	p_nfe	.	Float	mm	append
+64	p_oth	.	Float	mm	append
+65	p_sas	.	Float	mm	append
+66	transcript_type	.	String	mm	append
+67	gene_id	.	String	mm	append
+68	transcript_level	.	Integer	mm	append
+69	cds_length	.	Integer	mm	append
+70	num_coding_exons	.	Integer	mm	append
+71	gene_type	.	String	mm	append
+72	gene_length	.	Integer	mm	append
+73	exac_pLI	.	Float	The closer pLI is to one, the more intolerant of protein-truncating variants the transcript appears to be. We consider pLI ≥ 0.9 as an extremely intolerant set of transcripts.	append
+74	exac_obs_lof	.	Integer	mm	append
+75	exac_exp_lof	.	Float	mm	append
+76	exac_oe_lof	.	Float	mm	append
+77	brain_expression	.	String	mm	append
+78	chromosome	.	String	mm	append
+79	start_position	.	Integer	mm	append
+80	end_position	.	Integer	mm	append

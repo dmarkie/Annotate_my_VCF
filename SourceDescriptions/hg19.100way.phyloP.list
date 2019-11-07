@@ -1,5 +1,4 @@
 ##columns	1	2	3
-##column tag	Number	Type	Description
-4	id	1	String	Not a useful annotation
-5	score	1	Float	Conservation scoring by phyloP (phylogenetic p-values) from the PHAST package (http://compgen.bscb.cornell.edu/phast/) for multiple alignments of 99 vertebrate genomes to the human genome. It does not take into account neighbouring conservations scores, so is best for identifying signatures in conserved elements. abs(phyloP) is the -log(p-value) under a null hypothesis of neutral evolution, and a negative sign indicates faster-than expected evolution, while positive values imply conservation.
-
+##column tag	Number	Type	Description	Merge
+4	id	1	String	Not a useful annotation	single-overlaps
+5	score	1	Float	Conservation scoring by phyloP (phylogenetic p-values) from the PHAST package (http://compgen.bscb.cornell.edu/phast/) for multiple alignments of 99 vertebrate genomes to the human genome. It does not take into account neighbouring conservations scores, so is best for identifying signatures in conserved elements. abs(phyloP) is the -log(p-value) under a null hypothesis of neutral evolution, and a negative sign indicates faster-than expected evolution, while positive values imply conservation.	single-overlaps

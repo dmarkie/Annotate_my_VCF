@@ -1,0 +1,4 @@
+##columns	#chr	start	end
+##column tag	Number	Type	Description 	Merge
+4	Human_enhancer_shared	.	String	The coordinates of shared human ancient enhancer 	append
+6	Phylogenetic_age	.	String	The phylogenic age of the enhancer 	append
