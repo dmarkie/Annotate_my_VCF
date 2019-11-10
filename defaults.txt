@@ -1,5 +1,5 @@
 # This file defines the annotations that will be used by default, and provides paths to the source files and description files (that define annotation types and descriptions to be added to the header)
-
+# It also contains the path to the reference sequence that is being used, and some options to specify the contigs that the vcf will be broken into for parallelising the annotation jobs.
 
 ########### SNPEFF ############
 snpeff="" #change this to snpeff="yes" if you want snpeff by default when using a command with arguments to run annotation
@@ -10,7 +10,8 @@ defaultsnpeff_format="ANN"
 vep="" #change this to vep="yes" if you want vep by default when using a command with arguments to run annotation
 defaultvepspecies="homo_sapiens"
 defaultvepassembly="GRCh37"
-veparguments="--most_severe"
+
+########### BCSQ ############
 BCSQ="" #change this to defaultBCSQ="yes" if you want BCSQ by default when using a command with arguments to run annotation
 GFF3forBCSQ="/resource/bundles/ClinGeneDisease/Homo_sapiens.GRCh37.87.gff3.gz"
 
@@ -26,7 +27,6 @@ default_sourcetags=TraPv2,GERP2,gnomADLOFmetricsbyTranscript,MTR,ExAC_GC,CDTS,ph
 CCR=/resource/bundles/CCR/ccrs.combined.v2.20180420.bed.gz
 defaultannotations_CCR="percentile"
 description_CCR=/resource/pipelines/Annotate_my_VCF/SourceDescriptions/CCR.list
-
 
 GERP2=/resource/bundles/GERP/All_hg19_RS.bed.gz
 defaultannotations_GERP2="RS"

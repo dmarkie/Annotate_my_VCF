@@ -1,5 +1,5 @@
 #!/bin/bash
-# merge.sl 
+# merge.sl
 # this script is intended to take a collection of non-overlapping contig vcf.gz files, all with the same individuals in them, and stitch them together into one vcf.gz
 #SBATCH --job-name	MergeVCFs
 #SBATCH --time		12:00:00
@@ -34,7 +34,7 @@ mkdir -p ${PROJECT_PATH}/merge
 
 if [ ${#CONTIGARRAY[@]} -gt 1 ]
 then
-	# generate the list of inputs 
+	# generate the list of inputs
 	for CONTIG in ${CONTIGARRAY[@]}
 	do
 		#variant="${variant} I=${PROJECT_PATH}/ann/${CONTIG}_ann.vcf.gz"
@@ -59,9 +59,9 @@ ${variant} \
 		mkdir -p ${PROJECT_PATH}/done/merge
 		touch ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.done
 	else
-		echo "INFO: Output from Merge for ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz already available"		
+		echo "INFO: Output from Merge for ${PROJECT_PATH}/merge/${PROJECT}_ann.vcf.gz already available"
 	fi
-	
+
 	if [  ! -f ${PROJECT_PATH}/done/merge/${PROJECT}_ann.vcf.gz.tbi.done ]
 	then
 		module purge
